@@ -9,12 +9,17 @@ body:has(#guest-wrapper) {
 }
 
 #guest-wrapper {
+    #contents {
+        @apply min-h-screen flex items-center justify-center;
+    }
     #login-page {
+        @apply w-full bg-white p-[20px] pt-[40px];
+
         .the-logo {
             @apply w-[75px] h-[75px] p-[14px] mx-auto block;
             @apply border border-black rounded-full;
             @apply bg-[#ffe282] bg-no-repeat bg-center bg-[length:45px];
-            background-image: url($theBaseUrl+"header-logo.png");
+            background-image: url($theTemplateUrl+"header-logo.png");
         }
 
         h1 {

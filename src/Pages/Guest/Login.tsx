@@ -1,21 +1,19 @@
-// EXTERNAL
+// External
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
 
-// INTERNAL
+// Internal
 import { Field } from '../../components';
-//import { useAuth } from '../../hooks'
+import { useAuth } from '../../hooks'
 
 const Login = () => {
     const [username,setUsername] = useState<string>('')
 	const [password,setPassword] = useState<string>('')
-    //const { login, error, status } = useAuth()
-    const error : boolean = false
-    const status : string = "test"
+    const { login, error, status } = useAuth()
 
     const onLogin = (e : any) => {
         e.preventDefault()
-        //login(username, password)
+        login(username, password)
     }
     
     return (
@@ -37,7 +35,7 @@ const Login = () => {
                         lbl="PersonID"
                         value={username}
                         onChange={(e: string) => setUsername(e)}
-                        disabled={status == 'resolving'}
+                        disabled={status === 'resolving'}
                         autoComplete="username"
                     />
                     <Field
@@ -45,14 +43,14 @@ const Login = () => {
                         lbl="Kodeord"
                         value={password}
                         onChange={(e: string) => setPassword(e)}
-                        disabled={status == 'resolving'}
+                        disabled={status === 'resolving'}
                         autoComplete="password"
                     />
                     <p>
                         <button
                             className={'button ' + status}
                             onClick={onLogin}
-                            disabled={status == 'resolving'}
+                            disabled={status === 'resolving'}
                         >
                             <span className="btnTxt">
                                 Log på

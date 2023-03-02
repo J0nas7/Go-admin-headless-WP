@@ -40,7 +40,7 @@ export const Field = ({
 
 	return (
 		<div className={'field' + (error ? ' field--error' : '') }>
-            { lbl || displayLabel === true && (
+            { (lbl || displayLabel === true) && (
                 <label htmlFor={ `field-${ lbl }` }>
                     { lbl }
                 </label>
