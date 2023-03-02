@@ -1,5 +1,5 @@
 // External
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 // Internal
@@ -7,6 +7,8 @@ import { useAPI } from '../hooks';
 import './template.min.css';
 
 export const PrivateLayout = ({ children } : any) => {
+    const navigate = useNavigate();
+
     const [myMenuActive, setMyMenuActive] = useState(false)
     const toggleMyMenu = () => {
         setMyMenuActive(!myMenuActive)
@@ -15,6 +17,11 @@ export const PrivateLayout = ({ children } : any) => {
 
     const [wpBlogSettings, setWPBlogSettings] = useState<any>(null)
     const [myMenuItems, setMyMenuItems] = useState<any>(null)
+
+    const sideNavBrowse = (url : string) => {
+        setMyMenuActive(false)
+        navigate(url)
+    }
 
     useEffect(() => {
         let query1 = `query {
@@ -54,7 +61,7 @@ export const PrivateLayout = ({ children } : any) => {
             <div id="top-header">
                 <Link to="/">
                     <span id="page-logo">
-                        <img alt="Go@Netto" src={require('../Assets/Images/headerLogo.png')} />
+                        <img alt={ wpBlogSettings && wpBlogSettings.data.generalSettings.title } src={require('../Assets/Images/headerLogo.png')} />
                     </span>
                     <span id="logo-title">{ wpBlogSettings && wpBlogSettings.data.generalSettings.title }</span>
                     <span id="logo-teaser">{ wpBlogSettings && wpBlogSettings.data.generalSettings.description }</span>
@@ -72,7 +79,7 @@ export const PrivateLayout = ({ children } : any) => {
                     myMenuItems && myMenuItems.data.menu.menuItems.nodes.map((item: any, key: string) => {
                         return (
                             <div className="side-nav-item" key={key}>
-                                <span className="side-nav-item-link">{item.label}</span>
+                                <span className="side-nav-item-link" onClick={() => sideNavBrowse(item.url)}>{item.label}</span>
                             </div>
                         )
                     })
@@ -82,7 +89,7 @@ export const PrivateLayout = ({ children } : any) => {
                 <div id="main-contents">
                     { children }
                 </div>
-                <div className="clrBth"></div>
+                <div className="clear-both"></div>
             </div>
         </div>
     )
