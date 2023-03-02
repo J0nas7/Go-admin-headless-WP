@@ -57,7 +57,6 @@ const Login = () => {
                             </span>
                         </button>
                     </p>
-                    <span className="error-msg">&nbsp;</span>
                 </form>
             </div>
 

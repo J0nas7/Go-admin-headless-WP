@@ -27,6 +27,11 @@ body:has(#guest-wrapper) {
             @apply text-3xl font-[500];
         }
 
+        .error-notice {
+            @apply my-[20px];
+            @apply text-red-700 text-[.8125rem];
+        }
+
         .guest-form {
             input, textarea, select {
                 @apply w-full py-[6px] px-[10px] my-[10px] block;
@@ -37,10 +42,6 @@ body:has(#guest-wrapper) {
                 @apply w-full h-[34px] p-[8px] border-0 rounded-[4px];
                 @apply bg-green-400 cursor-pointer;
                 @apply text-white text-[1rem];
-            }
-    
-            .error-msg {
-                @apply text-red-700 text-[.8125rem];
             }
         }
 

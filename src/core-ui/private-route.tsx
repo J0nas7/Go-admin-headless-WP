@@ -3,19 +3,19 @@ import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 
 // Internal
-import { GuestLayout } from './guest-layout'
+import { PrivateLayout } from './private-layout'
 import { useAuthContext } from '../context';
 
-export const GuestRoute = () => {
+export const PrivateRoute = () => {
     const { isLoggedIn } = useAuthContext();
-    const auth = isLoggedIn // determine if authorized, from context or however you're doing it
+    const auth = !isLoggedIn // determine if authorized, from context or however you're doing it
 
     // If authorized, return an outlet that will render child elements
     // If not, return element that will navigate to login page
     return auth ?
-        <GuestLayout>
+        <PrivateLayout>
             <Outlet />
-        </GuestLayout>
+        </PrivateLayout>
         :
-        <Navigate to="/" />;
+        <Navigate to="/login" />;
 }
