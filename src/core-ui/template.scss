@@ -82,9 +82,15 @@ body:has(#main-wrapper) {
             @apply lg:w-[773px] mx-auto;
             @apply xl:w-[1000px];
 
+            .page-title {
+                @apply w-full mb-5;
+                @apply text-2xl font-bold;
+            }
+
             .card-wrapper {
-                @apply w-[calc(100%-20px)] max-w-[calc(33%-20px)] h-[200px];
-                @apply p-2.5 mx-2.5 mb-2.5 float-left bg-[#333];
+                @apply p-2.5 mb-2.5 float-left bg-[#333];
+                // mx-2.5 
+                //@apply w-[calc(100%-20px)] max-w-[calc(33%-20px)] h-[200px];
             }
         }
     }

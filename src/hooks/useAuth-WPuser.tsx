@@ -1,5 +1,6 @@
 // External
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom'
 
 // Internal
 import { useLoginMutation } from './mutations/use-login-mutation';
@@ -16,18 +17,21 @@ const errorCodes : any = {
 }
 
 export const useAuth = () => {
+    const navigate = useNavigate();
     const { isLoggedIn, setIsLoggedIn } = useAuthContext();
     const [error,setError] = useState<any>(null)
     const [status,setStatus] = useState<any>(null)
     const { loginMutation } = useLoginMutation();
 
     const onLoginSuccess = /*useSafeDispatch( */ (loginData : any) => {
-        setIsLoggedIn(loginData);
+        localStorage.setItem("logonCreds", JSON.stringify(loginData))
+        //setIsLoggedIn(loginData)
+        //setLoginState(loginData)
         setStatus('resolved')
+        navigate("/")
     } //);
 
     const onLogoutSuccess = /*useSafeDispatch(*/ () => {
-		setIsLoggedIn(false);
 		setStatus('resolved')
 	} //);
 
@@ -46,7 +50,6 @@ export const useAuth = () => {
         if (loginResult.data.errors) {
             onError(loginResult.data.errors[0])
         } else if (loginResult.data.data.login) {
-            //localStorage.setItem("loginCred", loginResult.data.data.login)
             onLoginSuccess(loginResult.data.data.login)
         }
     }
@@ -63,6 +66,9 @@ export const useAuth = () => {
 
     const logout = () => {
         setStatus('resolving')
+        localStorage.removeItem("logonCreds")
+        setStatus('resolved')
+        navigate("/")
         return onLogoutSuccess
 		//return logoutMutation().then(onLogoutSuccess).catch(onError);
 	};

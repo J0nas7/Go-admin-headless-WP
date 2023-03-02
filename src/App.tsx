@@ -7,16 +7,18 @@ import { PrivateRoute } from './core-ui/private-route'
 import { GuestRoute } from './core-ui/guest-route'
 
 // Admin pages
-import Overview from './Pages/Overview'
-//import MySettings from './Pages/MySettings'
+import Overview from './Pages/Private/Overview'
+import CurrentOrders from './Pages/Private/CurrentOrders'
+import MySettings from './Pages/Private/MySettings'
 
 // Guest pages
 import Login from './Pages/Guest/Login'
 
 // Global pages
+import Logout from './Pages/Logout'
 import NotFound from './Pages/NotFound'
 
-import './core-ui/global.min.css';
+import './core-ui/global.min.css'
 const domain = ''
 
 function App() {
@@ -25,12 +27,15 @@ function App() {
       <Routes>
         <Route element={<PrivateRoute />}>
             <Route path={domain+'/'} element={<Overview />}/>
+            <Route path={domain+'/cur-orders'} element={<CurrentOrders />}/>
+            <Route path={domain+'/my-settings'} element={<MySettings />}/>
         </Route>
 
         <Route element={<GuestRoute />}>
             <Route path={domain+'/login'} element={<Login />}/>
         </Route>
 
+        <Route path={domain+'/logout'} element={<Logout />}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
