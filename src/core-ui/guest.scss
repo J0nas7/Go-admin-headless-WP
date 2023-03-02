@@ -1,0 +1,51 @@
+@import "variables";
+
+body:has(#guest-wrapper) {
+    @apply text-black bg-[#f1f1f1];
+
+    @media (min-width: 768px) {
+        @apply bg-[url("../Assets/Images/brickBackground.png")];
+    }
+}
+
+#guest-wrapper {
+    #login-page {
+        .the-logo {
+            @apply w-[75px] h-[75px] p-[14px] mx-auto block;
+            @apply border border-black rounded-full;
+            @apply bg-[#ffe282] bg-no-repeat bg-center bg-[length:45px];
+            background-image: url($theBaseUrl+"header-logo.png");
+        }
+
+        h1 {
+            @apply mt-[40px] mb-[15px];
+            @apply text-3xl font-[500];
+        }
+
+        .guest-form {
+            input, textarea, select {
+                @apply w-full py-[6px] px-[10px] my-[10px] block;
+                @apply border border-[#ddd];
+            }
+    
+            button {
+                @apply w-full h-[34px] p-[8px] border-0 rounded-[4px];
+                @apply bg-green-400 cursor-pointer;
+                @apply text-white text-[1rem];
+            }
+    
+            .error-msg {
+                @apply text-red-700 text-[.8125rem];
+            }
+        }
+
+        .guest-link {
+            @apply block clear-both mt-[20px];
+            @apply text-black/[.87] text-[.8125rem];
+
+            a {
+                @apply underline text-blue-400;
+            }
+        }
+    }
+}
