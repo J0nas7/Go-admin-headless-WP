@@ -29,16 +29,22 @@ export const useAPI = () => {
         return { apiData }
     }
 
-    const rawAPIRequest = (graphQuery: string, graphVariables: any) => {
-        const axoisReq = axios({
+    const rawAPIRequest = (graphQuery: string, graphVariables: any, logonKey: string = '') => {
+        let axiosObj : any = {
             url: endpointUrl,
             method: 'post',
             data: {
               "query": graphQuery,
               "variables": graphVariables
             },
-            headers: { "Content-Type" : "application/json" }
-        })
+            headers: {
+                "Access-Control-Allow-Origin" : "*",
+                "Content-Type" : "Application/json"
+            }
+        }
+        if (logonKey) { axiosObj.headers.Authorization = logonKey }
+        
+        const axoisReq = axios(axiosObj)
 
         setAPIRequest(axoisReq)
         return axoisReq

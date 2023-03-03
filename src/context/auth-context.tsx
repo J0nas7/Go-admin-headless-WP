@@ -17,11 +17,21 @@ export const useAuthContext = () => {
         return false
     })
 
+    const [logonCreds, setLogonCreds] = useState(() => {
+        let logonCreds : any = localStorage.getItem("logonCreds")
+        if (logonCreds)
+            logonCreds = JSON.parse(logonCreds)
+            if (logonCreds.authToken) return logonCreds
+        
+        return false
+    })
+
     //console.log("local "+state)
 
     return {
         isLoggedIn,
         setIsLoggedIn,
+        logonCreds
         /*state, 
         setState*/
     }

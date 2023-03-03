@@ -68,6 +68,8 @@ body:has(#main-wrapper) {
         .side-nav-item {
             @apply w-full p-5;
             @apply text-white border-b-2 border-white;
+
+            .side-nav-item-link { @apply cursor-pointer; }
         }
     }
 
