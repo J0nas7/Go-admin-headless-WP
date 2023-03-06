@@ -42,7 +42,7 @@ export const useAPI = () => {
                 "Content-Type" : "Application/json"
             }
         }
-        if (logonKey) { axiosObj.headers.Authorization = logonKey }
+        if (logonKey) { axiosObj.headers.Authorization = 'Bearer '+logonKey; }
         
         const axoisReq = axios(axiosObj)
 
