@@ -4,90 +4,80 @@ import { useEffect, useState } from 'react'
 // Internal
 import { laravelAPI } from '../../hooks';
 import { useAuthContext } from '../../context'
+import { Field } from '../../components';
 
 const CurrentOrders = () => {
   const { readAllOrders } = laravelAPI()
   const [currentOrders, setCurrentOrders] = useState<any>([])
+  const [searchterm,setSearchterm] = useState<string>('')
+  const [dosearch,setDoSearch] = useState<string>('')
   const { logonCreds } = useAuthContext();
 
-  useEffect(() => {
-      /*let query = ``
-    let variables : any = null
-    
-    /*query = `query Orders {
-        order(id: 448) {
-            orderNumber
-            metaData {
-            key
-            value
-            }
-            billing {
-            firstName
-            address1
-            address2
-            postcode
-            state
-            phone
-            email
-            country
-            company
-            city
-            }
-        }
-    }`;*
-    query = `query {
-        orders {
-          edges {
-            node {
-              subtotal
-              total
-              lineItems {
-                edges {
-                  node {
-                    productId
-                    quantity
-                    subtotal
-                    total
-                  }
-                }
-              }
-              dateCompleted
-              paymentMethod
-              status
-            }
-          }
-        }
-    }`;
-  variables = null
+  let ordersClassList = "card-wrapper w-full max-w-[500px] the-order "
+  ordersClassList += "md:w-[48%] md:ml-[1%] md:mr-[1%] "
+  ordersClassList += "xl:w-[32%] xl:ml-0 xl:mr-[1%]"
 
-    rawAPIRequest(query, variables, logonCreds.authToken)
-        .then((res: any) => {
-            setCurrentOrders(res.data)
-            console.log(res.data)
-        });*/
-      readAllOrders().then(({ data }) => {
-        console.log(data)
-        setCurrentOrders(data)
-      })
+  const readCurrentOrders = () => {
+    readAllOrders(searchterm).then(({ data }) => {
+      setCurrentOrders(data)
+    })
+  }
+
+  const updateSearchTerm = (term : string) => {
+    setSearchterm(term)
+  }
+  
+  const performSearch = (e : any) => {
+    e.preventDefault()
+    setCurrentOrders([])
+    setDoSearch(searchterm)
+    readCurrentOrders()
+  }
+
+  useEffect(() => {
+      readCurrentOrders()
   }, [])
 
     return (
-      <div>
-          <h1 className="page-title">Orders ({currentOrders.length})</h1>
+      <div className="current-orders">
+          <div className="w-full">
+            <h1 className="page-title w-[50%]">Igangværende ordrer ({currentOrders.length})</h1>
+            <form onSubmit={performSearch}>
+              <Field
+                  type="text"
+                  lbl=""
+                  displayLabel={false}
+                  value={searchterm}
+                  placeholder="Søg og tryk på enter"
+                  onChange={(e: string) => updateSearchTerm(e)}
+                  disabled={false}
+                  className="search-field"
+              />
+            </form>
+            <div className="clear-both"></div>
+            {dosearch && (
+              <p className="block w-full my-2">Søgning efter: "{dosearch}"</p>
+            )}
+          </div>
           {!currentOrders && (
               <div className="card-wrapper w-full placeholdLoading"></div>
           )}
           {currentOrders && (
                 <div className="current-orders-list">
+                    <div order-id="0" className={ordersClassList}>
+                        <span className="order-destAdr float-left">Birkhøjterrasserne 431D</span>
+                        <span className="order-totalSale float-right">Kr. 1,037.59</span>
+                        <span className="order-destArea clear-both float-left">3520 Farum</span>
+                        <span className="order-deadline float-right">Senest kl. 17:00</span>
+                    </div>
                     {
                         currentOrders && currentOrders.map((item: any, key: string) => {
                             return (
-                                <div order-id={item.orderId} className="card-wrapper w-[32%] mr-[1%] the-order" key={key}>
-                                    <span className="order-destAdr">{item.destinationAdr}</span>
-                                    <span className="order-destArea">{item.destinationArea}</span>
-                                    <span className="order-totalSale">{item.totalSale}</span>
-                                    <span className="order-delData">{item.delivery_data}</span>
-                                    <span className="order-delRange">{item.delivery_range}</span>
+                                <div order-id={item.orderId} className={ordersClassList} key={key}>
+                                    <span className="order-destAdr float-left">{item.destinationAdr}</span>
+                                    <span className="order-totalSale float-right">Kr. {item.totalSale}</span>
+                                    <span className="order-destArea clear-both float-left">{item.destinationArea}</span>
+                                    <span className="order-deadline float-right">{item.deliveryDeadline}</span>
                                 </div>
                             )
                         })

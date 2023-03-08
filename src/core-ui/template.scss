@@ -85,8 +85,12 @@ body:has(#main-wrapper) {
             @apply xl:w-[1000px];
 
             .page-title {
-                @apply w-full mb-5;
+                @apply float-left mb-5;
                 @apply text-2xl font-bold;
+            }
+
+            .search-field {
+                @apply w-[50%] p-2 float-right bg-[#444] text-white;
             }
 
             .card-wrapper {
