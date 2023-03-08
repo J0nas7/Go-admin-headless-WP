@@ -5,11 +5,11 @@ import axios from 'axios'
 import { API_CONFIG } from './laravel-config'
 
 export const laravelAPI = () => {
-    const postWithString = (apiPoint : string, searchTerm : string = '') => {
+    const postWithData = (apiPoint : string, postContent : any = '') => {
         return axios
             .post(`${API_CONFIG.BASE_URL}/${apiPoint}`, 
             {
-                searchTerm: searchTerm
+                postContent: JSON.stringify(postContent)
             })
     }
 
@@ -19,7 +19,7 @@ export const laravelAPI = () => {
     }
 
     return {
-        postWithString,
+        postWithData,
         getRequest
     }
 }
