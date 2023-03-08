@@ -77,5 +77,5 @@ export const Field = ({
 				</p>
 			) }
 		</div>
-	);
-};
+	)
+}

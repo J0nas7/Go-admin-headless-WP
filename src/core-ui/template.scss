@@ -90,8 +90,9 @@ body:has(#main-wrapper) {
             }
 
             .search-field {
-                @apply w-[50%] p-2 float-right outline-0;
+                @apply w-full max-w-[330px] p-2 outline-0;
                 @apply bg-[#444] text-white;
+                @apply md:w-[50%] md:float-right;
             }
 
             .card-wrapper {
