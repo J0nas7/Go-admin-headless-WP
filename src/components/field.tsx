@@ -14,12 +14,13 @@
  */
 
 export const Field = ({
-    type, lbl, displayLabel, placeholder, description, value, grow, disabled, onChange, error, ...props
+    type, lbl, displayLabel, placeholder, description, value, grow, disabled, className, onChange, /*onKeyDown,*/ error, ...props
 } : {
     type: string,
     lbl: string, 
     value: string, 
     onChange: Function, 
+    //onKeyDown?: Function, 
     disabled: boolean, 
     error?: string,
     displayLabel?: boolean, 
@@ -27,6 +28,7 @@ export const Field = ({
     description?: string, 
     grow?: boolean, 
     autoComplete?: string, 
+    className?: string
     props?: Object
 }) => {
 	const inputProps = {
@@ -35,6 +37,7 @@ export const Field = ({
         id: `field-${ lbl }`,
 		placeholder,
         disabled,
+        className,
         ...props,
 	}
 
@@ -58,6 +61,7 @@ export const Field = ({
                         <input  
                             { ...inputProps }
                             onChange={(event) => onChange(event.target.value)}
+                            //onKeyDown={(event) => onChange(event)}
                         />
                     </span>
 				) }
