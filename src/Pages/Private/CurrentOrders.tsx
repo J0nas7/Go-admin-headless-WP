@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 // Internal
 import { laravelAPI } from '../../hooks'
 import { useAuthContext } from '../../context'
-import { Field, Pagination } from '../../components'
+import { Text, Block, Field, Pagination } from '../../components'
 
 const CurrentOrders = () => {
   const { postWithData } = laravelAPI()
@@ -31,8 +31,7 @@ const CurrentOrders = () => {
   ordersClassList += "md:w-[48%] md:ml-[1%] md:mr-[1%] "
   ordersClassList += "xl:w-[32%] xl:ml-0 xl:mr-[1%]"
 
-  let setupClassList = "block w-full float-left my-2 "
-  setupClassList += "md:w-[50%]"
+  let setupClassList = "md:w-[50%]"
 
   const readCurrentOrders = () => {
     setCurrentOrders(false)
@@ -65,9 +64,9 @@ const CurrentOrders = () => {
   }, [pageNr])
 
     return (
-      <div className="current-orders">
-          <div className="w-full">
-            <h1 className="page-title w-full md:w-[50%]">Igangværende ordrer</h1>
+      <Block className="current-orders">
+          <Block className="w-full">
+            <Text variant="h1">Igangværende ordrer</Text>
             <form onSubmit={performSearch}>
               <Field
                   type="text"
@@ -80,18 +79,18 @@ const CurrentOrders = () => {
                   className="search-field"
               />
             </form>
-            <div className="clear-both"></div>
-            <p className={setupClassList}>Viser resultat: {startResult}-{endResult} af {listSize}</p>
-            {dosearch && ( <p className={setupClassList+" md:text-right md:float-right"}>Søgning efter: "{dosearch}"</p> )}
-            {searchterm && !dosearch && ( <p className={setupClassList+" md:text-right md:float-right"}>Tryk på enter for at søge</p> )}
-            <div className="clear-both"></div>
-          </div>
+            <Block/>
+            {currentOrders && ( <Text className={setupClassList}>Viser resultat: {startResult}-{endResult} af {listSize}</Text> )}
+            {dosearch && ( <Text className={setupClassList+" md:text-right md:float-right"}>Søgning efter: "{dosearch}"</Text> )}
+            {searchterm && !dosearch && ( <Text className={setupClassList+" md:text-right md:float-right"}>Tryk på enter for at søge</Text> )}
+            <Block/>
+          </Block>
           {!currentOrders && (
               <div className={ordersClassList+" placeholdLoading"}>Henter...</div>
           )}
           {currentOrders && (
-            <div>
-                <div className="current-orders-list">
+            <Block>
+                <Block className="current-orders-list">
                     {/*<div order-id="0" className={ordersClassList}>
                         <span className="order-destAdr float-left">Birkhøjterrasserne 431D</span>
                         <span className="order-totalSale float-right">Kr. 1,037.59</span>
@@ -102,17 +101,17 @@ const CurrentOrders = () => {
                         currentOrders && currentOrders.map((item: any, key: string) => {
                             return (
                                 <div order-id={item.orderId} className={ordersClassList} key={key}>
-                                    <span className="order-destAdr float-left">{item.destinationAdr}</span>
-                                    <span className="order-totalSale float-right">Kr. {item.totalSale}</span>
-                                    <span className="order-destArea clear-both float-left">{item.destinationArea}</span>
-                                    <span className="order-deadline float-right">{item.deliveryDeadline}</span>
+                                    <Text variant="span" className="order-destAdr float-left">{item.destinationAdr}</Text>
+                                    <Text variant="span" className="order-totalSale float-right">Kr. {item.totalSale}</Text>
+                                    <Text variant="span" className="order-destArea clear-both float-left">{item.destinationArea}</Text>
+                                    <Text variant="span" className="order-deadline float-right">{item.deliveryDeadline}</Text>
                                 </div>
                             )
                         })
                     }
-                    <div className="clear-both"></div>
-                </div>
-                <div className="w-full mt-2">
+                    <Block/>
+                </Block>
+                <Block className="w-full mt-2">
                   <Pagination
                     onPageChange={(page: number) => setCurrentPageNr(page)}
                     totalCount={listSize}
@@ -120,10 +119,10 @@ const CurrentOrders = () => {
                     pageSize={PageSize}
                     className="current-orders-list"
                   />
-                </div>
-            </div>
+                </Block>
+            </Block>
           )}
-      </div>
+      </Block>
     )
 }
 

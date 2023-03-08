@@ -86,7 +86,7 @@ body:has(#main-wrapper) {
 
             .page-title {
                 @apply float-left mb-5;
-                @apply text-2xl font-bold;
+                @apply text-3xl font-semibold;
             }
 
             .search-field {
@@ -99,6 +99,23 @@ body:has(#main-wrapper) {
                 @apply p-2.5 mb-2.5 float-left bg-[#333];
                 // mx-2.5 
                 //@apply w-[calc(100%-20px)] max-w-[calc(33%-20px)] h-[200px];
+            }
+
+            .pagination-list {
+               @apply block w-full;
+            }
+
+            .pagination-item {
+                @apply block float-left mr-2 w-7 h-7 leading-7;
+                @apply bg-[#444] text-white text-center;
+
+                &.selected {
+                    @apply font-bold underline;
+                }
+
+                &.disabled {
+                   @apply text-gray-500; 
+                }
             }
         }
     }
