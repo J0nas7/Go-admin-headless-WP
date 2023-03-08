@@ -90,7 +90,8 @@ body:has(#main-wrapper) {
             }
 
             .search-field {
-                @apply w-[50%] p-2 float-right bg-[#444] text-white;
+                @apply w-[50%] p-2 float-right outline-0;
+                @apply bg-[#444] text-white;
             }
 
             .card-wrapper {
@@ -100,4 +101,27 @@ body:has(#main-wrapper) {
             }
         }
     }
+}
+
+@-webkit-keyframes placeholdLoading {
+    from {
+        background-color: #222;
+    }
+    to {
+        background-color: #333;
+    }
+}
+
+@keyframes placeholdLoading {
+   from {
+        background-color: #222;
+   }
+   to {
+    background-color: #333;
+   }
+}
+
+.placeholdLoading {
+    -webkit-animation: placeholdLoading 1s ease-in-out infinite alternate;
+    animation: placeholdLoading 1s ease-in-out infinite alternate;
 }

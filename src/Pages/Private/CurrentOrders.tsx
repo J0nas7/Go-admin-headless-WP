@@ -7,8 +7,8 @@ import { useAuthContext } from '../../context'
 import { Field } from '../../components';
 
 const CurrentOrders = () => {
-  const { readAllOrders } = laravelAPI()
-  const [currentOrders, setCurrentOrders] = useState<any>([])
+  const { postWithString } = laravelAPI()
+  const [currentOrders, setCurrentOrders] = useState<any>(false)
   const [searchterm,setSearchterm] = useState<string>('')
   const [dosearch,setDoSearch] = useState<string>('')
   const { logonCreds } = useAuthContext();
@@ -18,7 +18,8 @@ const CurrentOrders = () => {
   ordersClassList += "xl:w-[32%] xl:ml-0 xl:mr-[1%]"
 
   const readCurrentOrders = () => {
-    readAllOrders(searchterm).then(({ data }) => {
+    setCurrentOrders(false)
+    postWithString("readAllOrdersSummary", searchterm).then(({ data }) => {
       setCurrentOrders(data)
     })
   }
@@ -29,7 +30,6 @@ const CurrentOrders = () => {
   
   const performSearch = (e : any) => {
     e.preventDefault()
-    setCurrentOrders([])
     setDoSearch(searchterm)
     readCurrentOrders()
   }
@@ -55,12 +55,11 @@ const CurrentOrders = () => {
               />
             </form>
             <div className="clear-both"></div>
-            {dosearch && (
-              <p className="block w-full my-2">Søgning efter: "{dosearch}"</p>
-            )}
+            {dosearch && ( <p className="block w-full my-2">Søgning efter: "{dosearch}"</p> )}
+            {searchterm && !dosearch && ( <p className="block w-full my-2">Tryk på enter for at søge</p> )}
           </div>
           {!currentOrders && (
-              <div className="card-wrapper w-full placeholdLoading"></div>
+              <div className={ordersClassList+" placeholdLoading"}>Henter...</div>
           )}
           {currentOrders && (
                 <div className="current-orders-list">
