@@ -34,13 +34,8 @@ export const Pagination = ({
 
       return (
         <ul className={`${className} pagination-list`}>
-            <li
-                onClick={goPrevious}
-                className={`pagination-item 
-                    ${currentPage === 1 ? 'disabled' : null}
-                `}
-            >
-                <div className="arrow left"/>
+            <li onClick={goPrevious} className={`pagination-item${currentPage === 1 ? ' disabled' : ''}`}>
+                &laquo;
             </li>
 
             {
@@ -51,10 +46,8 @@ export const Pagination = ({
                     }
 
                     return (
-                        <li
-                            className={`pagination-item 
-                                ${pageNumber === currentPage ? 'selected' : null}
-                            `} 
+                        <li 
+                            className={`pagination-item${pageNumber === currentPage ? ' selected' : ''}`}
                             onClick={() => onPageChange(pageNumber)}
                             key={key}
                         >
@@ -65,13 +58,8 @@ export const Pagination = ({
                 // Pagination logic end
             }
 
-            <li
-                className={`pagination-item 
-                    ${currentPage === lastPage ? 'disabled' : null}
-                `}
-                onClick={goNext}
-            >
-                <div className="arrow right"/>
+            <li onClick={goNext} className={`pagination-item${currentPage === lastPage ? ' disabled' : ''}`}>
+                &raquo;
             </li>
         </ul>
       )
