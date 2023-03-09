@@ -1,5 +1,5 @@
 // Internal
-import { usePagination, DOTS } from './'
+import { usePagination, DOTS } from '..'
 
 export const Pagination = ({
     onPageChange, totalCount, siblingCount = 1, currentPage, pageSize, className
