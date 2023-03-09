@@ -3,36 +3,45 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 // Internal
-import { useAuthContext } from '../../context'
-import { useOrders } from '../../service'
-import { Text, Block, Field, Pagination, usePageNr, useSearchForm } from '../../components'
+import { useOrders, useSearchForm, usePageNr } from '../../service'
+import { Text, Block, Field, Pagination } from '../../components'
 
 const CurrentOrders = () => {
-  const params = useParams<{ pageNr: string }>()
+  const route = '/cur-orders/'
   const [displayOrders, setDisplayOrders] = useState<any>(false)
-  const { navigatePageNr, currentPageNr, startResult, endResult, pageSize, listSize, setListSize, PaginationIndex } = usePageNr('/cur-orders', params.pageNr)
-  const { searchterm, setSearchterm, dosearch, performSearch, SearchActive, SearchEnter } = useSearchForm()
+  const { paginationChange, currentPageNr, pageSize, listSize, setListSize, PaginationIndex } = usePageNr(route)
+  const { searchterm, setSearchterm, dosearch, performSearch, SearchActive, SearchEnter } = useSearchForm(route)
   const { readAllOrdersSummary, navigateToOrder } = useOrders()
-
+  
   let ordersClassList = "card-wrapper w-full max-w-[500px] the-order "
   ordersClassList += "md:w-[48%] md:ml-[1%] md:mr-[1%] "
   ordersClassList += "xl:w-[32%] xl:ml-0 xl:mr-[1%]"
-
   let setupClassList = "md:w-[50%]"
 
   const readCurrentOrders = () => {
     setDisplayOrders(false)
     setListSize(0)
-    readAllOrdersSummary(currentPageNr, searchterm).then(({ data }) => {
+    readAllOrdersSummary(currentPageNr, dosearch).then(({ data }) => {
+      console.log("GOT DATA")
       setDisplayOrders(data.orders)
       setListSize(data.length)
     })
   }
 
   useEffect(() => {
-      console.log("read orders "+currentPageNr+" "+dosearch)
-      readCurrentOrders()
+    console.log("TERMS CHANGED", currentPageNr, dosearch)
+    readCurrentOrders()
   }, [currentPageNr, dosearch])
+
+  /*useEffect(() => {
+    if (params.getSearch) {
+      console.log("PARAM SEARCH")
+      //changePageNr(1, false)
+      console.log("read orders p:"+currentPageNr+" s:"+dosearch)
+      console.log("other P:"+params.pageNr+" S:"+params.getSearch)
+      readCurrentOrders()
+    }
+  }, [params.getSearch])*/
 
     return (
       <Block className="current-orders">
@@ -76,7 +85,7 @@ const CurrentOrders = () => {
                 </Block>
                 <Block className="w-full mt-2">
                   <Pagination
-                    onPageChange={(page: number) => navigatePageNr(page)}
+                    onPageChange={(page: number) => paginationChange(page)}
                     totalCount={listSize}
                     currentPage={currentPageNr}
                     pageSize={pageSize}

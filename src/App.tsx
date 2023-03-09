@@ -27,7 +27,8 @@ function App() {
       <Routes>
         <Route element={<PrivateRoute />}>
             <Route path={domain+'/'} element={<Overview />}/>
-            <Route path={domain+'/cur-orders/:pageNr?'} element={<CurrentOrders />}/>
+            <Route path={domain+'/cur-orders'} element={<CurrentOrders />}/>
+            <Route path={domain+'/cur-orders/side?/:pageNr?/sog?/:getSearch?'} element={<CurrentOrders />}/>
             <Route path={domain+'/my-settings'} element={<MySettings />}/>
         </Route>
 
