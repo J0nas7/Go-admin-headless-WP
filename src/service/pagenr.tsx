@@ -9,17 +9,18 @@ import { useInternNavigate } from '../service'
 export const usePageNr = (pageUrl: string) => {
     const params = useParams<{ pageNr: string }>()
     const initPageNr : number = params.pageNr ? parseInt(params.pageNr) : 1
-    const [pageSize, setPageSize] = useState<number>(10)
+    const [pageSize, setPageSize] = useState<number>(12)
     const [currentPageNr, setCurrentPageNr] = useState<number>(initPageNr)
     const [startResult, setStartResult] = useState<number>((currentPageNr - 1) * pageSize + 1)
-    const [endResult, setEndResult] = useState<number>(startResult+9)
+    const [endResult, setEndResult] = useState<number>(startResult+(pageSize-1))
     const [listSize, setListSize] = useState<number>(0)
     const { appNavigate } = useInternNavigate(pageUrl)
 
     const updatePageNr = (pageNr: number) => {
         const newStartResult = ((pageNr - 1) * pageSize + 1)
-        let newEndResult = (newStartResult+9)
-        newEndResult = (newEndResult < listSize) ? newEndResult : listSize
+        let newEndResult = (newStartResult+(pageSize-1))
+        if (listSize > 0) newEndResult = (newEndResult < listSize) ? newEndResult : listSize
+
         console.log("SET PAGE "+pageNr+" "+currentPageNr)
         setCurrentPageNr(pageNr)
         console.log("PAGE SET "+pageNr+" "+currentPageNr)
