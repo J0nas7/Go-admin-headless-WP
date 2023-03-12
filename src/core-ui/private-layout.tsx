@@ -7,7 +7,7 @@ import { laravelAPI } from '../hooks';
 import './template.min.css';
 
 export const PrivateLayout = ({ children } : any) => {
-    const navigate = useNavigate();
+    let navigate = null
     const { getRequest } = laravelAPI()
 
     const [myMenuActive, setMyMenuActive] = useState(false)
@@ -19,6 +19,7 @@ export const PrivateLayout = ({ children } : any) => {
     const [myMenuItems, setMyMenuItems] = useState<any>(null)
 
     const sideNavBrowse = (url : string) => {
+        navigate = useNavigate();
         setMyMenuActive(false)
         navigate(url)
     }

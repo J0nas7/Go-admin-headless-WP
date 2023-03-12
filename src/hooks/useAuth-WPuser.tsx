@@ -59,9 +59,9 @@ export const useAuth = () => {
 		setStatus('resolving')
         
         loginMutation( username, password )
-            .then((res: any) => {
+            /*.then((res: any) => {
                 processLoginResult(res)
-            });
+            });*/
 	};
 
     const logout = () => {

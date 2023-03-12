@@ -18,7 +18,7 @@ const classes: Record<Variant, string> = {
     p: 'block w-full float-left my-2',
     span: 'block',
     small: 'text-xs',
-    div: 'block clear-both'
+    div: 'block'
 }
 
 type Props = {

@@ -1,4 +1,5 @@
 export * from './field'
 export * from './text_block'
-export * from './paginationCalculator'
-export * from './pagination'
+export * from './heading'
+export * from './pagination/paginationCalculator'
+export * from './pagination/pagination'

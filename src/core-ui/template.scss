@@ -107,7 +107,7 @@ body:has(#main-wrapper) {
 
             .pagination-item {
                 @apply block float-left mr-2 w-7 h-7 leading-7;
-                @apply bg-[#444] text-white text-center;
+                @apply bg-[#444] text-white text-center cursor-pointer;
 
                 &.selected {
                     @apply font-bold underline;
