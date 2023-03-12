@@ -1,11 +1,12 @@
 name: Node Continuous Integration
 
 on:
-  pull_request:
-    branches: [ master ]
+  push:
+    branches-ignore:
+      - main
 
 jobs:
-  test_pull_request:
+  test_push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
