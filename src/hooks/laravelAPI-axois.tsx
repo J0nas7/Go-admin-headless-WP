@@ -3,20 +3,20 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 // Internal
-import { API_CONFIG } from './laravel-config'
+import { env, paths } from './environment'
 
 export const laravelAPI = () => {
-    const postWithData = (apiPoint : string, postContent : any = '') => {
+    const postWithData = (apiEndPoint : string, postContent : any = '') => {
         return axios
-            .post(`${API_CONFIG.BASE_URL}/${apiPoint}`, 
+            .post(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`, 
             {
                 postContent: JSON.stringify(postContent)
             })
     }
 
-    const getRequest = (apiPoint : string) => {
+    const getRequest = (apiEndPoint : string) => {
         return axios
-            .get(`${API_CONFIG.BASE_URL}/${apiPoint}`)
+            .get(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`)
     }
 
     return {
