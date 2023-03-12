@@ -1,16 +1,18 @@
 name: Node Continuous Integration
 
 on:
-  pull_request:
-    branches: [ master ]
+  push:
+    branches-ignore:
+      - main
 
 jobs:
-  test_pull_request:
+  test_push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - run: echo "Hello there"
       - run: npm install
       - run: npm test
