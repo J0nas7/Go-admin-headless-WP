@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { PrivateLayout } from './private-layout'
 
@@ -24,3 +24,18 @@ test('should render top-header content like menu button', () => {
     const pageTitle = screen.getByText('Min menu')
     expect(pageTitle).toBeInTheDocument()
 })
+
+// FIND BY
+test('shound render top-header page title', () => {
+    render(<PrivateLayoutMock />)
+
+    /*await waitFor(() => {
+        const pageTitle = screen.getByText(/Go@/i)
+        expect(pageTitle).toBeInTheDocument();
+    });*/
+
+    setTimeout(() => {
+        const pageTitle = screen.findByText(/Go@/i)
+        expect(pageTitle).toBeInTheDocument()
+    }, 2000);
+  })
