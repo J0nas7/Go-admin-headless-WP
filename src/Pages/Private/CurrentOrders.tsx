@@ -1,10 +1,10 @@
 // External
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+//import { useParams } from 'react-router-dom'
 
 // Internal
 import { useOrders, useSearchForm, usePageNr } from '../../service'
-import { Text, Block, Field, Pagination } from '../../components'
+import { Text, Block, Field, Pagination, Heading } from '../../components'
 
 const CurrentOrders = () => {
   const route = '/cur-orders/'
@@ -46,7 +46,7 @@ const CurrentOrders = () => {
     return (
       <Block className="current-orders">
           <Block className="w-full">
-            <Text variant="h1">Igangværende ordrer</Text>
+            <Heading title="Igangværende ordrer" />
             <form onSubmit={performSearch}>
               <Field
                   type="text"

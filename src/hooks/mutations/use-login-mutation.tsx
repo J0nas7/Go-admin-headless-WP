@@ -1,5 +1,5 @@
 // Internal dependencies
-import { useAPI } from '../'
+//import { useAPI } from '../'
 
 export const useLoginMutation = () => {
     const loginQuery = `mutation LoginUser ($username: String!, $password: String!) {
@@ -13,11 +13,11 @@ export const useLoginMutation = () => {
         }
     }`;
 
-    const { rawAPIRequest } = useAPI()
+    //const { rawAPIRequest } = useAPI()
     
     const loginMutation = (inputUsername : string, inputPassword: string) => {
         const loginVariables = { username: inputUsername, password: inputPassword }
-        return rawAPIRequest(loginQuery, loginVariables)
+        //return rawAPIRequest(loginQuery, loginVariables)
 	}
 
 	return { loginMutation }
