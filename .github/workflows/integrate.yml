@@ -13,5 +13,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - run: echo "Hello there"
       - run: npm install
       - run: npm test
