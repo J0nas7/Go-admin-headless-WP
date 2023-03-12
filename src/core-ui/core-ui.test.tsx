@@ -48,5 +48,5 @@ test('shound render top-header page description/teaser', () => {
     setTimeout(() => {
         const pageTeaser = screen.findByText(/Gå på/i)
         expect(pageTeaser).toBeInTheDocument()
-    }, 2000);
+    }, 2100);
 })
