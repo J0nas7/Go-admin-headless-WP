@@ -1,5 +1,5 @@
 // External
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 
 // Internal
@@ -15,6 +15,10 @@ const Login = () => {
         e.preventDefault()
         login(username, password)
     }
+
+    useEffect(() => {
+        
+    }, [])
     
     return (
         <div id="login-page">
@@ -32,7 +36,7 @@ const Login = () => {
                 <form onSubmit={onLogin} autoComplete="on">
                     <Field
                         type="text"
-                        lbl="PersonID"
+                        lbl="Konto"
                         value={username}
                         onChange={(e: string) => setUsername(e)}
                         disabled={status === 'resolving'}

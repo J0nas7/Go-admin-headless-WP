@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 
 // Internal
 import { useAuth } from '../hooks';
+import { Block, Heading } from '../components'
 
 const Logout = () => {
     const { logout, error, status } = useAuth()
@@ -12,9 +13,9 @@ const Logout = () => {
   }, []);
 
     return (
-        <div>
-            <h1 className="page-title">Logging out...</h1>
-        </div>
+      <Block className="current-orders w-full">
+        <Heading title="Logging out..." />
+      </Block>
     )
 }
 

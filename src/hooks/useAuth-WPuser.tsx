@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom'
 
 // Internal
-import { useLoginMutation } from './mutations/use-login-mutation';
 import { useAuthContext } from '../context';
+import { laravelAPI } from '../hooks'
 
 const errorCodes : any = {
 	invalid_username:
@@ -19,9 +19,9 @@ const errorCodes : any = {
 export const useAuth = () => {
     const navigate = useNavigate();
     const { isLoggedIn, setIsLoggedIn } = useAuthContext();
+    const { postWithData } = laravelAPI()
     const [error,setError] = useState<any>(null)
     const [status,setStatus] = useState<any>(null)
-    const { loginMutation } = useLoginMutation();
 
     const onLoginSuccess = /*useSafeDispatch( */ (loginData : any) => {
         localStorage.setItem("logonCreds", JSON.stringify(loginData))
@@ -54,14 +54,24 @@ export const useAuth = () => {
         }
     }
 
-    const login = (username : string, password : string) => {
+    const login = (usernameInput : string, passwordInput : string) => {
 		setError(null)
 		setStatus('resolving')
+
+        const loginVariables = {
+            "username": usernameInput, 
+            "password": passwordInput,
+            //"token_name": usernameInput, 
+        }
         
-        loginMutation( username, password )
-            /*.then((res: any) => {
-                processLoginResult(res)
-            });*/
+        console.log(loginVariables)
+        //getLaravelSanctumCSRF()
+        postWithData("login", loginVariables)
+            .then(({ data }) => {
+                setStatus('resolved')
+                console.log("LOGIN RESULT")
+                console.log(data)
+            })
 	};
 
     const logout = () => {

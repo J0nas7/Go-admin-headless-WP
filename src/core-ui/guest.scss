@@ -16,10 +16,12 @@ body:has(#guest-wrapper) {
         @apply w-full bg-white p-[20px] pt-[40px];
 
         .the-logo {
-            @apply w-[75px] h-[75px] p-[14px] mx-auto block;
+            @apply bg-[url("../Assets/Images/corp-logo-short.png")] bg-no-repeat;
+            @apply w-[49px] h-[49px] mx-auto block;
+            /*@apply w-[75px] h-[75px] p-[14px] mx-auto block;
             @apply border border-black rounded-full;
-            @apply bg-[#ffe282] bg-no-repeat bg-center bg-[length:45px];
-            background-image: url($theTemplateUrl+"header-logo.png");
+            @apply bg-[#ffe282] bg-no-repeat bg-center bg-[length:45px];*/
+            //background-image: url($theTemplateUrl+"header-logo.png");
         }
 
         h1 {
