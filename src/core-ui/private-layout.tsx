@@ -3,12 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 // Internal
-import { laravelAPI } from '../hooks';
+import { useLaravelAPI } from '../hooks';
 import './template.min.css';
 
 export const PrivateLayout = ({ children } : any) => {
     const navigate = useNavigate();
-    const { getRequest } = laravelAPI()
+    const { getRequest } = useLaravelAPI()
 
     const [myMenuActive, setMyMenuActive] = useState(false)
     const toggleMyMenu = () => {
@@ -24,12 +24,19 @@ export const PrivateLayout = ({ children } : any) => {
     }
 
     useEffect(() => {
-        getRequest("generalPageInfo").then(({ data }) => {
-            setWPBlogSettings(data)
+        getRequest("basicPageInfo").then(({ data }) => {
+            console.log(data);
+            setWPBlogSettings(data.data)
+        }).catch((error) => {
+            if (error.response.statusText == "Unauthorized") {
+                console.log("Error unauthorized")
+                navigate("/logout")
+            }
         })
 
-        getRequest("getMenuLocation/174").then(({ data }) => {
-            setMyMenuItems(data)
+        getRequest("getMenuLocation/Support-Min-menu").then(({ data }) => {
+            console.log(data)
+            setMyMenuItems(data.data)
         })
     }, [])
 
@@ -56,7 +63,7 @@ export const PrivateLayout = ({ children } : any) => {
                     myMenuItems && myMenuItems.map((item: any, key: string) => {
                         return (
                             <div className="side-nav-item" key={key}>
-                                <span className="side-nav-item-link" onClick={() => sideNavBrowse(item.meta_value)}>{item.post_title}</span>
+                                <span className="side-nav-item-link" onClick={() => sideNavBrowse(item.link)}>{item.label}</span>
                             </div>
                         )
                     })

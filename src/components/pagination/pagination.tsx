@@ -16,21 +16,24 @@ export const Pagination = ({
         pageSize : pageSize,
         siblingCount : siblingCount,
         currentPage : currentPage
-      })
+    })
     
       if (currentPage === 0 || paginationRange.length < 2) {
         return null
       }
 
+      let lastPage = paginationRange[paginationRange.length - 1]
+      
       const goPrevious = () => {
+        if (currentPage === 1) return
         onPageChange(currentPage - 1)
-      }
-
-      const goNext = () => {
+    }
+    
+    const goNext = () => {
+        if (currentPage === lastPage) return
         onPageChange(currentPage + 1)
       }
 
-      let lastPage = paginationRange[paginationRange.length - 1]
 
       return (
         <ul className={`${className} pagination-list`}>

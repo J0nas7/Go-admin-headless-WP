@@ -22,9 +22,9 @@ const CurrentOrders = () => {
     setDisplayOrders(false)
     setListSize(0)
     readAllOrdersSummary(currentPageNr, dosearch).then(({ data }) => {
-      console.log("GOT DATA")
-      setDisplayOrders(data.orders)
-      setListSize(data.length)
+      console.log("GOT DATA", data)
+      setDisplayOrders(data.data.orders)
+      setListSize(data.data.length)
     })
   }
 

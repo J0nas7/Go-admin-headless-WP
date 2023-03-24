@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // Internal
-import { laravelAPI } from '../hooks'
+import { useLaravelAPI } from '../hooks'
 
 export const useOrders = () => {
-    const { postWithData } = laravelAPI()
+    const { postWithData } = useLaravelAPI()
     const navigate = useNavigate()
 
     // Data collecting

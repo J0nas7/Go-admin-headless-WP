@@ -6,7 +6,7 @@ import { useAuth } from '../hooks';
 import { Block, Heading } from '../components'
 
 const Logout = () => {
-    const { logout, error, status } = useAuth()
+  const { logout, error, status } = useAuth()
 
   useEffect(() => {
     logout()

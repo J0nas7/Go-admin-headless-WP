@@ -4,14 +4,21 @@ import axios from 'axios'
 
 // Internal
 import { env, paths } from './environment'
+import { useAuthContext } from '../context'
 
-export const laravelAPI = () => {
+export const useLaravelAPI = () => {
+    const { authID, authKey } = useAuthContext()
+
+    axios.defaults.withCredentials = true
+
     const postWithData = async (apiEndPoint : string, postContent : any = '') => {
         //await getLaravelSanctumToken()
         return axios
             .post(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`, 
             {
-                postContent: JSON.stringify(postContent)
+                postContent: JSON.stringify(postContent),
+                /*authID: authID,
+                authKey: authKey*/
             },
             {
                 withCredentials: true,
@@ -22,6 +29,8 @@ export const laravelAPI = () => {
     }
 
     const getRequest = (apiEndPoint : string) => {
+        /*apiEndPoint += "?uid="+authID
+        apiEndPoint += "&authkey="+authKey*/
         return axios
             .get(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`)
     }
@@ -41,10 +50,15 @@ export const laravelAPI = () => {
         });
     }
 
+    const requestCSRF = async () => {
+        return axios.get(`${env.url.API_URL}/sanctum/csrf-cookie`)
+    }
+
     return {
         postWithData,
         getRequest,
-        /*getLaravelSanctumToken,
-        getLaravelSanctumCSRF*/
+        requestCSRF,
+        getLaravelSanctumCSRF,
+        //getLaravelSanctumToken,
     }
 }

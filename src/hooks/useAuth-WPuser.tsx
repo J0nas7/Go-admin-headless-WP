@@ -4,36 +4,37 @@ import { useNavigate } from 'react-router-dom'
 
 // Internal
 import { useAuthContext } from '../context';
-import { laravelAPI } from '../hooks'
+import { useLaravelAPI } from '../hooks'
 
 const errorCodes : any = {
-	invalid_username:
-		'Invalid username or email address. Please check it and try again.',
+    wrong_credentials: 'Incorrect credentials. Please try again.',
+	invalid_username: 'Invalid username or email address. Please check it and try again.',
 	invalid_email: 'Invalid email address. Please check it and try again.',
-	incorrect_password:
-		'Incorrect password. Please try again, or reset your password.',
+	incorrect_password: 'Incorrect password. Please try again, or reset your password.',
 	empty_username: 'Please provide your username.',
 	empty_password: 'Please provide your password.',
+    "Login Attempt Failed": 'Incorrect credentials. Please try again.',
 }
 
 export const useAuth = () => {
     const navigate = useNavigate();
     const { isLoggedIn, setIsLoggedIn } = useAuthContext();
-    const { postWithData } = laravelAPI()
+    const { getRequest, postWithData, requestCSRF } = useLaravelAPI()
     const [error,setError] = useState<any>(null)
     const [status,setStatus] = useState<any>(null)
 
-    const onLoginSuccess = /*useSafeDispatch( */ (loginData : any) => {
-        localStorage.setItem("logonCreds", JSON.stringify(loginData))
+    const onLoginSuccess = /*useSafeDispatch( */ () => {
+        /*loginData = {
+            "userID": loginData.userID,
+            "keyWithSalt": loginData.keyWithSalt,
+        }
+        localStorage.setItem("logonCreds", JSON.stringify(loginData))*/
+        localStorage.setItem("adminLoggedIn", "Is logged in")
         //setIsLoggedIn(loginData)
         //setLoginState(loginData)
         setStatus('resolved')
         navigate("/")
     } //);
-
-    const onLogoutSuccess = /*useSafeDispatch(*/ () => {
-		setStatus('resolved')
-	} //);
 
     const onError = /*useSafeDispatch(*/ (errors : any) => {
         const theErrorMsg = errors.message
@@ -46,15 +47,23 @@ export const useAuth = () => {
 
     const processLoginResult = (loginResult : any) => {
         console.log("THE RESULT")
-        console.log(loginResult.data)
-        if (loginResult.data.errors) {
-            onError(loginResult.data.errors[0])
-        } else if (loginResult.data.data.login) {
-            onLoginSuccess(loginResult.data.data.login)
+        console.log(loginResult)
+        if (loginResult.success == false) {
+            onError(loginResult)
+        } else if (loginResult.success == true) {
+            onLoginSuccess()
         }
     }
 
-    const login = (usernameInput : string, passwordInput : string) => {
+    const adminLoggedInTest = () => {
+        getRequest("adminLoggedInTest").then(({ data }) => {
+            if (data.success == true && data.data == true) {
+                onLoginSuccess()
+            }
+        })
+    }
+
+    const login = async (usernameInput : string, passwordInput : string) => {
 		setError(null)
 		setStatus('resolving')
 
@@ -64,33 +73,41 @@ export const useAuth = () => {
             //"token_name": usernameInput, 
         }
         
-        console.log(loginVariables)
-        //getLaravelSanctumCSRF()
-        postWithData("login", loginVariables)
-            .then(({ data }) => {
-                setStatus('resolved')
-                console.log("LOGIN RESULT")
-                console.log(data)
-            })
+        console.log("loginVariables", loginVariables)
+        requestCSRF().then(csrfResp => {
+            postWithData("adminLogin", loginVariables)
+                .then(({ data }) => {
+                    setStatus('resolved')
+                    console.log("LOGIN RESULT:")
+                    console.log(data)
+                    processLoginResult(data)
+                })
+        })
 	};
 
     const logout = () => {
+        console.log("Admin logging out")
         setStatus('resolving')
-        localStorage.removeItem("logonCreds")
-        setStatus('resolved')
-        navigate("/")
-        return onLogoutSuccess
+        getRequest("adminLogout").then(({ data }) => {
+            if (data.success == true && data.data == true) {
+                localStorage.removeItem("adminLoggedIn")
+                setStatus('resolved')
+                navigate("/login")
+                return true
+            }
+        })
 		//return logoutMutation().then(onLogoutSuccess).catch(onError);
 	};
 
     return {
 		login,
 		logout,
+        adminLoggedInTest,
 		isLoggedIn,
+		error,
+		status,
 		/*refetchViewer,
 		loadingViewer,
 		viewer,*/
-		error,
-		status
 	}
 }

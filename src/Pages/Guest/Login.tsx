@@ -9,16 +9,16 @@ import { useAuth } from '../../hooks'
 const Login = () => {
     const [username,setUsername] = useState<string>('')
 	const [password,setPassword] = useState<string>('')
-    const { login, error, status } = useAuth()
+    const { login, adminLoggedInTest, error, status } = useAuth()
+
+    useEffect(() => {
+        adminLoggedInTest()
+    }, [])
 
     const onLogin = (e : any) => {
         e.preventDefault()
         login(username, password)
     }
-
-    useEffect(() => {
-        
-    }, [])
     
     return (
         <div id="login-page">

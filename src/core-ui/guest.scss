@@ -14,6 +14,7 @@ body:has(#guest-wrapper) {
     }
     #login-page {
         @apply w-full bg-white p-[20px] pt-[40px];
+        @apply md:w-[768px];
 
         .the-logo {
             @apply bg-[url("../Assets/Images/corp-logo-short.png")] bg-no-repeat;
