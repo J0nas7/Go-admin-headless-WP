@@ -6,7 +6,7 @@ import { PrivateLayout } from './private-layout'
 const PrivateLayoutMock = () => {
     return (
         <BrowserRouter>
-            <PrivateLayout>
+            <PrivateLayout secure={true}>
                 <div>Demo</div>
             </PrivateLayout>
         </BrowserRouter>

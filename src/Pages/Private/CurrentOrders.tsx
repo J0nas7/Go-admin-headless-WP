@@ -1,6 +1,5 @@
 // External
 import { useEffect, useState } from 'react'
-//import { useParams } from 'react-router-dom'
 
 // Internal
 import { useOrders, useSearchForm, usePageNr } from '../../service'
@@ -13,7 +12,7 @@ const CurrentOrders = () => {
   const { searchterm, setSearchterm, dosearch, performSearch, SearchActive, SearchEnter } = useSearchForm(route)
   const { readAllOrdersSummary, navigateToOrder } = useOrders()
   
-  let ordersClassList = "card-wrapper w-full max-w-[500px] the-order "
+  let ordersClassList = "card-wrapper w-full max-w-[500px] the-order cursor-pointer "
   ordersClassList += "md:w-[48%] md:ml-[1%] md:mr-[1%] "
   ordersClassList += "xl:w-[32%] xl:ml-0 xl:mr-[1%]"
   let setupClassList = "md:w-[50%]"
@@ -22,9 +21,9 @@ const CurrentOrders = () => {
     setDisplayOrders(false)
     setListSize(0)
     readAllOrdersSummary(currentPageNr, dosearch).then(({ data }) => {
-      console.log("GOT DATA")
-      setDisplayOrders(data.orders)
-      setListSize(data.length)
+      console.log("GOT DATA", data)
+      setDisplayOrders(data.data.orders)
+      setListSize(data.data.length)
     })
   }
 

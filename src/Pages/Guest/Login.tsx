@@ -1,5 +1,5 @@
 // External
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 
 // Internal
@@ -9,7 +9,11 @@ import { useAuth } from '../../hooks'
 const Login = () => {
     const [username,setUsername] = useState<string>('')
 	const [password,setPassword] = useState<string>('')
-    const { login, error, status } = useAuth()
+    const { login, adminLoggedInTest, error, status } = useAuth()
+
+    useEffect(() => {
+        adminLoggedInTest()
+    }, [])
 
     const onLogin = (e : any) => {
         e.preventDefault()
@@ -32,7 +36,7 @@ const Login = () => {
                 <form onSubmit={onLogin} autoComplete="on">
                     <Field
                         type="text"
-                        lbl="PersonID"
+                        lbl="Konto"
                         value={username}
                         onChange={(e: string) => setUsername(e)}
                         disabled={status === 'resolving'}

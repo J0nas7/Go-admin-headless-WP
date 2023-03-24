@@ -8,11 +8,13 @@ import { Text } from './'
  */
 
 export const Heading = ({
-    title
+    title,
+    className = ''
 } : {
-    title: string
+    title: string,
+    className?: string
 }) => {
 	return (
-        <Text variant="h1">{title}</Text>
+        <Text variant="h1" className={className}>{title}</Text>
     )
 }
