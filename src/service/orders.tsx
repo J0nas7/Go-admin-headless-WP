@@ -9,14 +9,21 @@ export const useOrders = () => {
     const { postWithData } = useLaravelAPI()
     const navigate = useNavigate()
 
-    // Data collecting
+    // Read summary of all orders
     const readAllOrdersSummary = (pageNr: number, searchterm: string) => {
         const postData = {
             "pageNr" : pageNr ? pageNr : 1,
             "searchTerm" : searchterm
         }
-
         return postWithData("readAllOrdersSummary", postData)
+    }
+
+    // Read one specific order based on orderNr
+    const readOneOrder = (orderNr: number) => {
+        const postData = {
+            "orderNr" : orderNr
+        }
+        return postWithData("readOneOrder", postData)
     }
 
     // Navigating
@@ -27,6 +34,7 @@ export const useOrders = () => {
     return {
         // Data collection
         readAllOrdersSummary,
+        readOneOrder,
 
         // Navigating
         navigateToOrder

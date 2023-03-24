@@ -9,6 +9,7 @@ import { GuestRoute } from './core-ui/guest-route'
 // Admin pages
 import Overview from './Pages/Private/Overview'
 import CurrentOrders from './Pages/Private/CurrentOrders'
+import ReadOrder from './Pages/Private/ReadOrder'
 import MySettings from './Pages/Private/MySettings'
 
 // Guest pages
@@ -27,8 +28,8 @@ function App() {
       <Routes>
         <Route element={<PrivateRoute />}>
             <Route path={domain+'/'} element={<Overview />}/>
-            <Route path={domain+'/cur-orders'} element={<CurrentOrders />}/>
             <Route path={domain+'/cur-orders/side?/:pageNr?/sog?/:getSearch?'} element={<CurrentOrders />}/>
+            <Route path={domain+'/order/:orderNr'} element={<ReadOrder />}/>
             <Route path={domain+'/my-settings'} element={<MySettings />}/>
         </Route>
 
@@ -36,8 +37,10 @@ function App() {
             <Route path={domain+'/login'} element={<Login />}/>
         </Route>
 
-        <Route path={domain+'/logout'} element={<Logout />}/>
-        <Route path="*" element={<NotFound />} />
+        <Route element={<PrivateRoute secure={false} />}>
+          <Route path={domain+'/logout'} element={<Logout />}/>
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </Router>
   )

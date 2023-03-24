@@ -6,7 +6,14 @@ import { useEffect, useState } from 'react'
 import { useLaravelAPI } from '../hooks';
 import './template.min.css';
 
-export const PrivateLayout = ({ children } : any) => {
+//export const PrivateLayout = ({ children } : any) => {
+export const PrivateLayout = ({
+        secure = true,
+        children
+    } : {
+        secure : Boolean, 
+        children: any
+    }) => {
     const navigate = useNavigate();
     const { getRequest } = useLaravelAPI()
 
@@ -33,11 +40,13 @@ export const PrivateLayout = ({ children } : any) => {
                 navigate("/logout")
             }
         })
-
-        getRequest("getMenuLocation/Support-Min-menu").then(({ data }) => {
-            console.log(data)
-            setMyMenuItems(data.data)
-        })
+        
+        if (secure) {
+            getRequest("getMenuLocation/Support-Min-menu").then(({ data }) => {
+                console.log(data)
+                setMyMenuItems(data.data)
+            })
+        }
     }, [])
 
     return (
@@ -60,7 +69,7 @@ export const PrivateLayout = ({ children } : any) => {
             </div>
             <div id="side-nav" className={(myMenuActive ? 'open-nav' : '')}>
                 {
-                    myMenuItems && myMenuItems.map((item: any, key: string) => {
+                    (myMenuItems && secure) && myMenuItems.map((item: any, key: string) => {
                         return (
                             <div className="side-nav-item" key={key}>
                                 <span className="side-nav-item-link" onClick={() => sideNavBrowse(item.link)}>{item.label}</span>
