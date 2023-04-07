@@ -43,10 +43,15 @@ export const PrivateLayout = ({
         navigate(url)
     }
 
-    // Grab data on render
-    useEffect(() => {
+    // Redux dispatch page info and menu items
+    const fetchLayoutContent = async () => {
         dispatch(fetchOptions("basicPageInfo", setBasicPageInfo))
         if (secure) dispatch(fetchOptions("getMenuLocation/Support-Min-menu", setSideNavMenuItems))
+    }
+
+    // Grab data on render
+    useEffect(() => {
+        fetchLayoutContent()   
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

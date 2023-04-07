@@ -1,20 +1,26 @@
+// External
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
+
+// Internal
 import { PrivateLayout } from './private-layout'
+import { ReduxProviderWrapper } from '../redux/test.reduxWrapper'
 
 const PrivateLayoutMock = () => {
     return (
-        <BrowserRouter>
-            <PrivateLayout secure={true}>
-                <div>Demo</div>
-            </PrivateLayout>
-        </BrowserRouter>
+        <ReduxProviderWrapper>
+            <BrowserRouter>
+                <PrivateLayout secure={true}>
+                    <div>Demo</div>
+                </PrivateLayout>
+            </BrowserRouter>
+        </ReduxProviderWrapper>
     )
 }
 
 // GET BY
-test('should render top-header content like logo', () => {
+test('should render top-header content like logo',  () => {
     render(<PrivateLayoutMock />)
     const logo = screen.getByRole('img')
     expect(logo).toBeInTheDocument()

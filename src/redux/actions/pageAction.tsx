@@ -13,7 +13,7 @@ export const usePageActions = () => {
         try {
             const data = await httpGetRequest(httpUrl)
             
-            if (data === "Unauthorized") {
+            if (data && data === "Unauthorized") {
                 console.log("Error unauthorized")
                 navigate("/logout")
             } else if (data) {

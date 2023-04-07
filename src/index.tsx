@@ -1,12 +1,12 @@
 // External
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { Provider } from "react-redux";
+import { Provider } from "react-redux"
 
 // Internal
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import appStore from "./redux/store";
+import appStore from "./redux/store"
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

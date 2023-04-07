@@ -50,10 +50,11 @@ export const useLaravelAPI = () => {
             const { data: response } = await axios.get(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`)
             return response
         } catch (e:any) {
-            console.log("httpGetRequest", e)
-            if (e.response.statusText === "Unauthorized") {
+            if (e.response && e.response.statusText === "Unauthorized") {
+                console.log("httpGetRequest", e)
                 return e.response.statusText
             }
+            return false
         }
     }
 
