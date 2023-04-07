@@ -1,40 +1,28 @@
 // External
-import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
 
 // Internal
-import { PrivateLayout } from './private-layout'
-import { ReduxProviderWrapper } from '../redux/test.reduxWrapper'
+import { PrivateLayoutMock } from '../test-env'
 
-const PrivateLayoutMock = () => {
-    return (
-        <ReduxProviderWrapper>
-            <BrowserRouter>
-                <PrivateLayout secure={true}>
-                    <div>Demo</div>
-                </PrivateLayout>
-            </BrowserRouter>
-        </ReduxProviderWrapper>
-    )
-}
-
-// GET BY
-test('should render top-header content like logo',  () => {
-    render(<PrivateLayoutMock />)
-    const logo = screen.getByRole('img')
-    expect(logo).toBeInTheDocument()
+test('Should render top-header logo',  () => {
+    render(<PrivateLayoutMock><div>Demo</div></PrivateLayoutMock>)
+    setTimeout(() => {
+        const logo = screen.getByRole('img')
+        const logoAlt = screen.getByAltText('Go@')
+        expect(logo).toBeInTheDocument()
+        expect(logoAlt).toBeInTheDocument()
+        expect(logoAlt).toHaveAttribute('src')
+    }, 2000)
 })
 
-test('should render top-header content like menu button', () => {
-    render(<PrivateLayoutMock />)
+test('Should render top-header menu button', () => {
+    render(<PrivateLayoutMock><div>Demo</div></PrivateLayoutMock>)
     const pageTitle = screen.getByText('Min menu')
     expect(pageTitle).toBeInTheDocument()
 })
 
-// FIND BY
-test('shound render top-header page title', () => {
-    render(<PrivateLayoutMock />)
+test('Should render top-header page title', () => {
+    render(<PrivateLayoutMock><div>Demo</div></PrivateLayoutMock>)
     /*await waitFor(() => {
         const pageTitle = screen.getByText(/Go@/i)
         expect(pageTitle).toBeInTheDocument();
@@ -42,11 +30,11 @@ test('shound render top-header page title', () => {
     setTimeout(() => {
         const pageTitle = screen.findByText(/Go@/i)
         expect(pageTitle).toBeInTheDocument()
-    }, 2000);
+    }, 2000)
 })
 
-test('shound render top-header page description/teaser', () => {
-    render(<PrivateLayoutMock />)
+test('Should render top-header page description/teaser', () => {
+    render(<PrivateLayoutMock><div>Demo</div></PrivateLayoutMock>)
     /*await waitFor(() => {
         const pageTitle = screen.getByText(/Go@/i)
         expect(pageTitle).toBeInTheDocument();
@@ -54,5 +42,5 @@ test('shound render top-header page description/teaser', () => {
     setTimeout(() => {
         const pageTeaser = screen.findByText(/Gå på/i)
         expect(pageTeaser).toBeInTheDocument()
-    }, 2100);
+    }, 2100)
 })
