@@ -1,13 +1,12 @@
 // External
-import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 // Internal
 import { env, paths } from './environment'
-import { useAuthContext } from '../context'
+//import { useAuthContext } from '../context'
 
 export const useLaravelAPI = () => {
-    const { authID, authKey } = useAuthContext()
+    //const { authID, authKey } = useAuthContext()
 
     axios.defaults.withCredentials = true
 
@@ -28,19 +27,46 @@ export const useLaravelAPI = () => {
             })
     }
 
-    const getRequest = (apiEndPoint : string) => {
-        /*apiEndPoint += "?uid="+authID
-        apiEndPoint += "&authkey="+authKey*/
-        return axios
-            .get(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`)
+    const httpPostWithData = async (apiEndPoint : string, postContent : any = '') => {
+        try {
+            const { data: response } = await axios.post(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`, 
+                                                {
+                                                    postContent: JSON.stringify(postContent),
+                                                },
+                                                {
+                                                    withCredentials: true,
+                                                    headers: {
+                                                        'Accept': 'application/json'
+                                                    },
+                                                })
+            return response
+        } catch(e) {
+            console.log("httpPostWithData", e)
+        }
     }
 
-    const getLaravelSanctumToken = async () => {
+    const httpGetRequest = async (apiEndPoint : string) => {
+        try {
+            const { data: response } = await axios.get(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`)
+            return response
+        } catch (e:any) {
+            console.log("httpGetRequest", e)
+            if (e.response.statusText === "Unauthorized") {
+                return e.response.statusText
+            }
+        }
+    }
+
+    const getRequest = async (apiEndPoint : string) => {
+        return axios.get(`${env.url.API_URL+paths.API_ROUTE}/${apiEndPoint}`)
+    }
+
+    /*const getLaravelSanctumToken = async () => {
         await axios.post(`${env.url.API_URL+paths.API_ROUTE}/tokens/create`).then(response => {
             console.log(response)
             //axios.defaults.headers.post['X-CSRF-Token'] = response.data.CSRFToken;
         });
-    }
+    }*/
 
     const getLaravelSanctumCSRF = async () => {
         await axios.get(`${env.url.API_URL}/sanctum/csrf-cookie`).then(response => {
@@ -57,6 +83,8 @@ export const useLaravelAPI = () => {
     return {
         postWithData,
         getRequest,
+        httpPostWithData,
+        httpGetRequest,
         requestCSRF,
         getLaravelSanctumCSRF,
         //getLaravelSanctumToken,

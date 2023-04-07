@@ -1,16 +1,12 @@
 // External
-import { useEffect, useState } from 'react'
+//import { useEffect, useState } from 'react'
 
 // Internal
 //import { useAPI } from '../../hooks';
 
 const MySettings = () => {
   //const { apiData, simpleAPIRequest, rawAPIRequest } = useAPI()
-  const [mySettingsData, setMySettingsData] = useState<any>(null)
-
-  useEffect(() => {
-    
-  }, []);
+  //const [mySettingsData, setMySettingsData] = useState<any>(null)
 
     return (
         <div>

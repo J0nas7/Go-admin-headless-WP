@@ -1,13 +1,26 @@
 // External
-import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // Internal
-import { useLaravelAPI } from '../hooks'
+import {
+    useAppDispatch, 
+    useOrdersActions,
+    selectSingleOrder, 
+    selectOrdersSummary, 
+    selectOrdersSummaryLength,
+    setSingleOrder,
+    setOrdersSummary, 
+    useTypedSelector
+} from '../redux'
 
 export const useOrders = () => {
-    const { postWithData } = useLaravelAPI()
     const navigate = useNavigate()
+
+    const dispatch = useAppDispatch()
+    const { fetchOrders } = useOrdersActions()
+    const singleOrder = useTypedSelector(selectSingleOrder)
+    const ordersSummaryList = useTypedSelector(selectOrdersSummary)
+    const ordersSummaryListLength = useTypedSelector(selectOrdersSummaryLength)
 
     // Read summary of all orders
     const readAllOrdersSummary = (pageNr: number, searchterm: string) => {
@@ -15,15 +28,14 @@ export const useOrders = () => {
             "pageNr" : pageNr ? pageNr : 1,
             "searchTerm" : searchterm
         }
-        return postWithData("readAllOrdersSummary", postData)
+        //return postWithData("readAllOrdersSummary", postData)
+        dispatch(fetchOrders("readAllOrdersSummary", postData, setOrdersSummary))
     }
 
     // Read one specific order based on orderNr
     const readOneOrder = (orderNr: number) => {
-        const postData = {
-            "orderNr" : orderNr
-        }
-        return postWithData("readOneOrder", postData)
+        const postData = { "orderNr" : orderNr }
+        dispatch(fetchOrders("readOneOrder", postData, setSingleOrder))
     }
 
     // Navigating
@@ -35,6 +47,11 @@ export const useOrders = () => {
         // Data collection
         readAllOrdersSummary,
         readOneOrder,
+
+        // Variables
+        singleOrder,
+        ordersSummaryList,
+        ordersSummaryListLength,
 
         // Navigating
         navigateToOrder

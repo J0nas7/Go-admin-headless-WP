@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 // Internal
 import { useOrders, useSearchForm, usePageNr } from '../../service'
-import { Text, Block, Field, Pagination, Heading, OrderCard } from '../../components'
+import { Block, Field, Pagination, Heading, OrderCard } from '../../components'
 import { useDocumentTitle } from '../../hooks'
 import { OrderDTO } from '../../types'
 
@@ -12,7 +12,7 @@ const CurrentOrders = () => {
   const [ordersToRender, setOrdersToRender] = useState<OrderDTO[]>([])
   const { paginationChange, currentPageNr, pageSize, listSize, setListSize, PaginationIndex } = usePageNr(route)
   const { searchterm, setSearchterm, dosearch, performSearch, SearchActive, SearchEnter } = useSearchForm(route)
-  const { readAllOrdersSummary } = useOrders()
+  const { readAllOrdersSummary, ordersSummaryList, ordersSummaryListLength } = useOrders()
   const { setDocumentTitle } = useDocumentTitle()
   const docTitle = "Igangværende ordrer"
   
@@ -24,20 +24,26 @@ const CurrentOrders = () => {
   const readCurrentOrders = () => {
     setOrdersToRender([])
     setListSize(0)
-    readAllOrdersSummary(currentPageNr, dosearch).then(({ data }) => {
-      console.log("GOT DATA", data)
-      setOrdersToRender(data.data.orders)
-      setListSize(data.data.length)
-    })
+    readAllOrdersSummary(currentPageNr, dosearch)
   }
 
   useEffect(() => {
+    if (ordersSummaryListLength) {
+      console.log("GOT DATA", ordersSummaryList)
+      setOrdersToRender(ordersSummaryList)
+      setListSize(ordersSummaryListLength)
+    }
+  }, [ordersSummaryList])
+
+  useEffect(() => {
     setDocumentTitle(docTitle)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     console.log("TERMS CHANGED", currentPageNr, dosearch)
     readCurrentOrders()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPageNr, dosearch])
 
     return (

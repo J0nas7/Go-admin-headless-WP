@@ -5,11 +5,11 @@ import { OrderDTO } from '../../types'
 
 
 /**
- * Renders a form field.
+ * Renders order in varying formats.
  *
  * @param {string} props.order Order to display.
  * @param {string} props.format Format of rendering.
- * @param {string} props.classList className.
+ * @param {string} props.classList ClassName.
  */
 
 export const OrderCard = ({
@@ -24,7 +24,7 @@ export const OrderCard = ({
     const { navigateToOrder } = useOrders()
 	return (
         <Block>
-            { format == 'summary' && (
+            { format === 'summary' && (
                 <div onClick={() => navigateToOrder(order.orderId)} className={classList}>
                     <Text variant="span" className="order-destAdr float-left">{order.destinationAdr}</Text>
                     <Text variant="span" className="order-totalSale float-right">Kr. {order.totalSale}</Text>
@@ -32,7 +32,7 @@ export const OrderCard = ({
                     <Text variant="span" className="order-deadline float-right">{order.deliveryDeadline}</Text>
                 </div>
             )}
-            { format == 'single' && (
+            { format === 'single' && (
                 <Block>
                     <Text variant='p'>deliveryDeadline: {order.deliveryDeadline}</Text>
                     <Text variant='p'>destinationAdr: {order.destinationAdr}</Text>

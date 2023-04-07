@@ -1,18 +1,28 @@
 // External
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 // Internal
 import { Field } from '../../components';
 import { useAuth } from '../../hooks'
+import { useTypedSelector, selectIsLoggedIn } from '../../redux'
 
 const Login = () => {
     const [username,setUsername] = useState<string>('')
 	const [password,setPassword] = useState<string>('')
-    const { login, adminLoggedInTest, error, status } = useAuth()
+    const { login, adminLoggedInTest, onLoginSuccess, error, status } = useAuth()
+    const isLoggedIn = useTypedSelector(selectIsLoggedIn)
+
+    useEffect(() => {
+        if (isLoggedIn === true) {
+            onLoginSuccess()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoggedIn])
 
     useEffect(() => {
         adminLoggedInTest()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onLogin = (e : any) => {
@@ -26,7 +36,7 @@ const Login = () => {
             <h1>Organisation</h1>
             <span className="teaser-msg">Log på med din organisationskonto</span>
 
-            { error && (
+            { error && status === 'resolved' && (
 				<div className="error-notice">
 					<p>{ error }</p>
 				</div>
