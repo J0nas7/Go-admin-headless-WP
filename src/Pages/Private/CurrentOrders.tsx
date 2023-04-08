@@ -3,14 +3,18 @@ import { useEffect, useState } from 'react'
 
 // Internal
 import { useOrders, useSearchForm, usePageNr } from '../../service'
-import { Text, Block, Field, Pagination, Heading } from '../../components'
+import { Block, Field, Pagination, Heading, OrderCard } from '../../components'
+import { useDocumentTitle } from '../../hooks'
+import { OrderDTO } from '../../types'
 
 const CurrentOrders = () => {
   const route = '/cur-orders/'
-  const [displayOrders, setDisplayOrders] = useState<any>(false)
+  const [ordersToRender, setOrdersToRender] = useState<OrderDTO[]>([])
   const { paginationChange, currentPageNr, pageSize, listSize, setListSize, PaginationIndex } = usePageNr(route)
   const { searchterm, setSearchterm, dosearch, performSearch, SearchActive, SearchEnter } = useSearchForm(route)
-  const { readAllOrdersSummary, navigateToOrder } = useOrders()
+  const { readAllOrdersSummary, ordersSummaryList, ordersSummaryListLength } = useOrders()
+  const { setDocumentTitle } = useDocumentTitle()
+  const docTitle = "Igangværende ordrer"
   
   let ordersClassList = "card-wrapper w-full max-w-[500px] the-order cursor-pointer "
   ordersClassList += "md:w-[48%] md:ml-[1%] md:mr-[1%] "
@@ -18,34 +22,34 @@ const CurrentOrders = () => {
   let setupClassList = "md:w-[50%]"
 
   const readCurrentOrders = () => {
-    setDisplayOrders(false)
+    setOrdersToRender([])
     setListSize(0)
-    readAllOrdersSummary(currentPageNr, dosearch).then(({ data }) => {
-      console.log("GOT DATA", data)
-      setDisplayOrders(data.data.orders)
-      setListSize(data.data.length)
-    })
+    readAllOrdersSummary(currentPageNr, dosearch)
   }
+
+  useEffect(() => {
+    if (ordersSummaryListLength) {
+      console.log("GOT DATA", ordersSummaryList)
+      setOrdersToRender(ordersSummaryList)
+      setListSize(ordersSummaryListLength)
+    }
+  }, [ordersSummaryList])
+
+  useEffect(() => {
+    setDocumentTitle(docTitle)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     console.log("TERMS CHANGED", currentPageNr, dosearch)
     readCurrentOrders()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPageNr, dosearch])
-
-  /*useEffect(() => {
-    if (params.getSearch) {
-      console.log("PARAM SEARCH")
-      //changePageNr(1, false)
-      console.log("read orders p:"+currentPageNr+" s:"+dosearch)
-      console.log("other P:"+params.pageNr+" S:"+params.getSearch)
-      readCurrentOrders()
-    }
-  }, [params.getSearch])*/
 
     return (
       <Block className="current-orders">
           <Block className="w-full">
-            <Heading title="Igangværende ordrer" />
+            <Heading title={docTitle} />
             <form onSubmit={performSearch}>
               <Field
                   type="text"
@@ -64,21 +68,17 @@ const CurrentOrders = () => {
             <SearchEnter classList={setupClassList}/>
             <Block className="clear-both"/>
           </Block>
-          {!displayOrders && ( <div className={ordersClassList+" placeholdLoading"}>Henter...</div> )}
-          {displayOrders && (
+          {!ordersToRender.length && ( <div className={ordersClassList+" placeholdLoading"}>Henter...</div> )}
+          {ordersToRender.length && (
             <Block>
                 <Block className="current-orders-list">
                     {
-                        displayOrders && displayOrders.map((item: any, key: string) => {
-                            return (
-                                <div onClick={() => navigateToOrder(item.orderId)} order-id={item.orderId} className={ordersClassList} key={key}>
-                                    <Text variant="span" className="order-destAdr float-left">{item.destinationAdr}</Text>
-                                    <Text variant="span" className="order-totalSale float-right">Kr. {item.totalSale}</Text>
-                                    <Text variant="span" className="order-destArea clear-both float-left">{item.destinationArea}</Text>
-                                    <Text variant="span" className="order-deadline float-right">{item.deliveryDeadline}</Text>
-                                </div>
-                            )
-                        })
+                        //displayOrders.length && displayOrders.map((item: any, key: string) => {
+                        ordersToRender.length && ordersToRender.map(order => (
+                            //return (
+                                <OrderCard order={order} format='summary' classList={ordersClassList} key={order.orderId}/>
+                            //)
+                          ))
                     }
                     <Block className="clear-both"/>
                 </Block>

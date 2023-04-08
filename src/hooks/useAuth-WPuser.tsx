@@ -1,10 +1,19 @@
 // External
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 
 // Internal
 import { useAuthContext } from '../context';
 import { useLaravelAPI } from '../hooks'
+import {
+    useAppDispatch, 
+    useTypedSelector, 
+    useAuthActions, 
+    setLoggedIn, 
+    setLoggedOut, 
+    setLoginErrorType, 
+    selectLoginErrorType 
+} from '../redux'
 
 const errorCodes : any = {
     wrong_credentials: 'Incorrect credentials. Please try again.',
@@ -14,58 +23,77 @@ const errorCodes : any = {
 	empty_username: 'Please provide your username.',
 	empty_password: 'Please provide your password.',
     "Login Attempt Failed": 'Incorrect credentials. Please try again.',
+    "Empty request": 'Name or password not provided.',
 }
 
 export const useAuth = () => {
-    const navigate = useNavigate();
-    const { isLoggedIn, setIsLoggedIn } = useAuthContext();
-    const { getRequest, postWithData, requestCSRF } = useLaravelAPI()
+    const navigate = useNavigate()
+    const { isLoggedIn, setIsLoggedIn } = useAuthContext()
+    const { httpPostWithData, requestCSRF } = useLaravelAPI()
     const [error,setError] = useState<any>(null)
     const [status,setStatus] = useState<any>(null)
 
+    const dispatch = useAppDispatch()
+    const loginErrorType = useTypedSelector(selectLoginErrorType)
+    const { fetchAdminLoggedInStatus, adminDoLogout } = useAuthActions()
+
     const onLoginSuccess = /*useSafeDispatch( */ () => {
+        localStorage.setItem("adminLoggedIn", "Is logged in")
+        setIsLoggedIn(true)
+        navigate("/")
         /*loginData = {
             "userID": loginData.userID,
             "keyWithSalt": loginData.keyWithSalt,
         }
         localStorage.setItem("logonCreds", JSON.stringify(loginData))*/
-        localStorage.setItem("adminLoggedIn", "Is logged in")
         //setIsLoggedIn(loginData)
         //setLoginState(loginData)
-        setStatus('resolved')
-        navigate("/")
     } //);
 
-    const onError = /*useSafeDispatch(*/ (errors : any) => {
-        const theErrorMsg = errors.message
-		setError(
-            errorCodes[theErrorMsg] || theErrorMsg || errors
-            // `${ stripHtml( decodeEntities( errors.message ) ).result }`
-        )
-		setStatus('resolved')
+    const onError = /*useSafeDispatch(*/ (errors? : any) => {
+        if (loginErrorType) {
+            const theErrorMsg = loginErrorType//errors.message
+            setError(
+                errorCodes[theErrorMsg] || theErrorMsg || loginErrorType
+                // `${ stripHtml( decodeEntities( errors.message ) ).result }`
+            )
+        } else if (errors) {
+            dispatch(setLoginErrorType({
+                "data": errors.message
+            }))
+        } else if (loginErrorType === "") {
+            setError(null)
+        }
 	} //);
+    useEffect(() => {
+        onError()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loginErrorType])
 
     const processLoginResult = (loginResult : any) => {
-        console.log("THE RESULT")
-        console.log(loginResult)
-        if (loginResult.success == false) {
+        console.log("THE RESULT", loginResult)
+        setStatus('resolved')
+        if (loginResult.success === false) {
             onError(loginResult)
-        } else if (loginResult.success == true) {
+        } else if (loginResult.success === true) {
             onLoginSuccess()
         }
     }
 
     const adminLoggedInTest = () => {
-        getRequest("adminLoggedInTest").then(({ data }) => {
-            if (data.success == true && data.data == true) {
+        dispatch(fetchAdminLoggedInStatus(setLoggedIn))
+        /*getRequest("adminLoggedInTest").then(({ data }) => {
+            if (data.success === true && data.data === true) {
                 onLoginSuccess()
             }
-        })
+        })*/
     }
 
     const login = async (usernameInput : string, passwordInput : string) => {
-		setError(null)
-		setStatus('resolving')
+        setStatus('resolving')
+		dispatch(setLoginErrorType({
+            "data": ""
+        }))
 
         const loginVariables = {
             "username": usernameInput, 
@@ -74,34 +102,31 @@ export const useAuth = () => {
         }
         
         console.log("loginVariables", loginVariables)
-        requestCSRF().then(csrfResp => {
-            postWithData("adminLogin", loginVariables)
-                .then(({ data }) => {
-                    setStatus('resolved')
-                    console.log("LOGIN RESULT:")
-                    console.log(data)
-                    processLoginResult(data)
-                })
+        requestCSRF().then(async csrfResp => {
+            try {
+                const data = await httpPostWithData("adminLogin", loginVariables)
+                console.log("LOGIN RESULT:", data)
+                processLoginResult(data)
+            } catch (e) {
+                console.log("useAuth login", e)
+            }
         })
-	};
+	}
 
     const logout = () => {
         console.log("Admin logging out")
         setStatus('resolving')
-        getRequest("adminLogout").then(({ data }) => {
-            if (data.success == true && data.data == true) {
-                localStorage.removeItem("adminLoggedIn")
-                setStatus('resolved')
-                navigate("/login")
-                return true
-            }
-        })
-		//return logoutMutation().then(onLogoutSuccess).catch(onError);
-	};
+        dispatch(adminDoLogout(setLoggedOut))
+        localStorage.removeItem("adminLoggedIn")
+        setStatus('resolved')
+        navigate("/login")
+        return true
+	}
 
     return {
 		login,
 		logout,
+        onLoginSuccess,
         adminLoggedInTest,
 		isLoggedIn,
 		error,

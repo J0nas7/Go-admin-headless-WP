@@ -6,10 +6,11 @@ import { useAuth } from '../hooks';
 import { Block, Heading } from '../components'
 
 const Logout = () => {
-  const { logout, error, status } = useAuth()
+  const { logout } = useAuth()
 
   useEffect(() => {
     logout()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
     return (

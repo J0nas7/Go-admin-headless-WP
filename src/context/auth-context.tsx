@@ -2,21 +2,21 @@
 import { useState } from 'react';
 
 // Internal
-import { useLocalStorage } from '../hooks';
+//import { useLocalStorage } from '../hooks'
 
 export const useAuthContext = () => {
     //const [isLoggedIn, setIsLoggedIn] = useState<any>(null)
     //const [state, setState] = useLocalStorage("logonCreds")
-    const [authID, setAuthID] = useState<number>(0)
-    const [authKey, setAuthKey] = useState<string>('')
+    //const [authID, setAuthID] = useState<number>(0)
+    //const [authKey, setAuthKey] = useState<string>('')
     
     let logonCreds : any = null
-    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
         logonCreds = localStorage.getItem("adminLoggedIn")
         if (logonCreds != null) {
             //logonCreds = JSON.parse(logonCreds)
             //if (logonCreds.userID && logonCreds.keyWithSalt) {
-            if (logonCreds == "Is logged in") {
+            if (logonCreds === "Is logged in") {
                 /*setAuthID(logonCreds.userID)
                 setAuthKey(logonCreds.keyWithSalt)*/
                 //console.log("logonCreds true", logonCreds)
@@ -40,8 +40,8 @@ export const useAuthContext = () => {
     //console.log("local "+state)
 
     return {
-        authID,
-        authKey,
+        //authID,
+        //authKey,
         isLoggedIn,
         setIsLoggedIn,
         logonCreds

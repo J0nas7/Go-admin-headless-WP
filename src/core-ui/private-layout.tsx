@@ -3,8 +3,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 // Internal
-import { useLaravelAPI } from '../hooks';
 import './template.min.css';
+import {
+    selectBasicPageInfo, 
+    setBasicPageInfo, 
+    selectSideNavMenuItems, 
+    setSideNavMenuItems, 
+    useAppDispatch, 
+    usePageActions, 
+    useTypedSelector
+} from '../redux';
 
 //export const PrivateLayout = ({ children } : any) => {
 export const PrivateLayout = ({
@@ -14,40 +22,44 @@ export const PrivateLayout = ({
         secure : Boolean, 
         children: any
     }) => {
-    const navigate = useNavigate();
-    const { getRequest } = useLaravelAPI()
+    // Hooks
+    const navigate = useNavigate()
 
-    const [myMenuActive, setMyMenuActive] = useState(false)
-    const toggleMyMenu = () => {
-        setMyMenuActive(!myMenuActive)
-    }
-
+    // Local variables
     const [wpBlogSettings, setWPBlogSettings] = useState<any>(null)
-    const [myMenuItems, setMyMenuItems] = useState<any>(null)
+    const [menuItemsToRender, setMenuItemsToRender] = useState<any>(null)
+    const [myMenuActive, setMyMenuActive] = useState(false)
 
+    // Redux stuff
+    const dispatch = useAppDispatch()
+    const { fetchOptions } = usePageActions()
+    const basicPageInfo = useTypedSelector(selectBasicPageInfo)
+    const sideNavMenuItems = useTypedSelector(selectSideNavMenuItems)
+
+    // Local functions
+    const toggleMyMenu = () => { setMyMenuActive(!myMenuActive) }
     const sideNavBrowse = (url : string) => {
         setMyMenuActive(false)
         navigate(url)
     }
 
+    // Redux dispatch page info and menu items
+    const fetchLayoutContent = async () => {
+        dispatch(fetchOptions("basicPageInfo", setBasicPageInfo))
+        if (secure) dispatch(fetchOptions("getMenuLocation/Support-Min-menu", setSideNavMenuItems))
+    }
+
+    // Grab data on render
     useEffect(() => {
-        getRequest("basicPageInfo").then(({ data }) => {
-            console.log(data);
-            setWPBlogSettings(data.data)
-        }).catch((error) => {
-            if (error.response.statusText == "Unauthorized") {
-                console.log("Error unauthorized")
-                navigate("/logout")
-            }
-        })
-        
-        if (secure) {
-            getRequest("getMenuLocation/Support-Min-menu").then(({ data }) => {
-                console.log(data)
-                setMyMenuItems(data.data)
-            })
-        }
+        fetchLayoutContent()   
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    // Listen for redux variables
+    useEffect(() => {
+        if (basicPageInfo) setWPBlogSettings(basicPageInfo)
+        if (sideNavMenuItems) setMenuItemsToRender(sideNavMenuItems)
+    }, [basicPageInfo, sideNavMenuItems])
 
     return (
         <div id="main-wrapper">
@@ -69,7 +81,7 @@ export const PrivateLayout = ({
             </div>
             <div id="side-nav" className={(myMenuActive ? 'open-nav' : '')}>
                 {
-                    (myMenuItems && secure) && myMenuItems.map((item: any, key: string) => {
+                    (menuItemsToRender && secure) && menuItemsToRender.map((item: any, key: string) => {
                         return (
                             <div className="side-nav-item" key={key}>
                                 <span className="side-nav-item-link" onClick={() => sideNavBrowse(item.link)}>{item.label}</span>

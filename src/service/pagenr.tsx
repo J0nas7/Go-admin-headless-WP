@@ -9,7 +9,7 @@ import { useInternNavigate } from '../service'
 export const usePageNr = (pageUrl: string) => {
     const params = useParams<{ pageNr: string }>()
     const initPageNr : number = params.pageNr ? parseInt(params.pageNr) : 1
-    const [pageSize, setPageSize] = useState<number>(12)
+    const [pageSize] = useState<number>(12)
     const [currentPageNr, setCurrentPageNr] = useState<number>(initPageNr)
     const [startResult, setStartResult] = useState<number>((currentPageNr - 1) * pageSize + 1)
     const [endResult, setEndResult] = useState<number>(startResult+(pageSize-1))
@@ -42,6 +42,7 @@ export const usePageNr = (pageUrl: string) => {
             console.log("param pagenr change")
             updatePageNr(parseInt(params.pageNr))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.pageNr])
 
     const PaginationIndex = ({
