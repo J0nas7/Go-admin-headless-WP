@@ -34,6 +34,11 @@ export const ordersSlice = createSlice({
             state.ordersSummaryListLength = action.payload.data.length
             state.loading = false
         },
+        resetOrdersSummary: (state:OrdersState, action:any) => {
+            state.ordersSummaryList = action.payload
+            state.ordersSummaryListLength = 0
+            state.loading = false
+        },
         setSingleOrder: (state:OrdersState, action:any) => {
             state.singleOrder = action.payload.data
         },
@@ -41,7 +46,7 @@ export const ordersSlice = createSlice({
 })
 
 const { actions } = ordersSlice
-export const { setOrders, setOrdersSummary, setSingleOrder } = actions
+export const { setOrders, setOrdersSummary, resetOrdersSummary, setSingleOrder } = actions
 
 export default ordersSlice.reducer
 

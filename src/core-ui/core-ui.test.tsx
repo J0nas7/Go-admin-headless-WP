@@ -1,18 +1,30 @@
 // External
 import { render, screen, waitFor } from '@testing-library/react'
+//import { useDispatch, useSelector } from "react-redux";
 
 // Internal
 import { PrivateLayoutMock } from '../test-env'
 
-test('Should render top-header logo',  () => {
+/*const reactRedux = { useDispatch, useSelector }
+beforeEach(() => {
+    /*const mockDispatch = jest.fn()
+    useDispatchMock.mockReturnValue(mockDispatch)*
+    const useDispatchMock = jest.spyOn(reactRedux, "useDispatch")
+    let fnc = jest.fn
+    useDispatchMock.mockImplementation(() : any => {
+        return undefined
+    })
+})*/
+
+test('Should render top-header logo',  async () => {
     render(<PrivateLayoutMock><div>Demo</div></PrivateLayoutMock>)
-    setTimeout(() => {
+    await waitFor(() => {
         const logo = screen.getByRole('img')
-        const logoAlt = screen.getByAltText('Go@')
+        const logoAlt = screen.getByAltText('Gogo')
         expect(logo).toBeInTheDocument()
         expect(logoAlt).toBeInTheDocument()
         expect(logoAlt).toHaveAttribute('src')
-    }, 2000)
+    })
 })
 
 test('Should render top-header menu button', () => {
@@ -21,26 +33,20 @@ test('Should render top-header menu button', () => {
     expect(pageTitle).toBeInTheDocument()
 })
 
-test('Should render top-header page title', () => {
+test('Should render top-header page title', async () => {
     render(<PrivateLayoutMock><div>Demo</div></PrivateLayoutMock>)
-    /*await waitFor(() => {
-        const pageTitle = screen.getByText(/Go@/i)
-        expect(pageTitle).toBeInTheDocument();
-    });*/
-    setTimeout(() => {
-        const pageTitle = screen.findByText(/Go@/i)
+    const title = "Gogo"
+    await waitFor(() => {
+        const pageTitle = screen.getByText(title)
         expect(pageTitle).toBeInTheDocument()
-    }, 2000)
+    })
+    expect(await screen.findByText(title)).toBeVisible()
 })
 
-test('Should render top-header page description/teaser', () => {
+test('Should render top-header page description/teaser', async () => {
     render(<PrivateLayoutMock><div>Demo</div></PrivateLayoutMock>)
-    /*await waitFor(() => {
-        const pageTitle = screen.getByText(/Go@/i)
-        expect(pageTitle).toBeInTheDocument();
-    });*/
-    setTimeout(() => {
-        const pageTeaser = screen.findByText(/Gå på/i)
+    await waitFor(() => {
+        const pageTeaser = screen.getByText(/Description/i)
         expect(pageTeaser).toBeInTheDocument()
-    }, 2100)
+    })
 })

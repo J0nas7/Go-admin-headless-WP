@@ -21,15 +21,12 @@ export const usePageNr = (pageUrl: string) => {
         let newEndResult = (newStartResult+(pageSize-1))
         if (listSize > 0) newEndResult = (newEndResult < listSize) ? newEndResult : listSize
 
-        console.log("SET PAGE "+pageNr+" "+currentPageNr)
         setCurrentPageNr(pageNr)
-        console.log("PAGE SET "+pageNr+" "+currentPageNr)
         setStartResult(newStartResult)
         setEndResult(newEndResult)
     }
 
     const paginationChange = (pageNr: number) => {
-        console.log("PAGINATION CHANGE")
         const navData = {
             'role': 'pageNr',
             'value': pageNr
@@ -39,7 +36,6 @@ export const usePageNr = (pageUrl: string) => {
 
     useEffect(() => {
         if (params.pageNr) {
-            console.log("param pagenr change")
             updatePageNr(parseInt(params.pageNr))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -16,7 +16,16 @@ export const useOrdersActions = () => {
         }
     }
 
+    const resetOrders = (__reducer: Function) => async (dispatch: Dispatch) => {
+        try {
+            dispatch(__reducer([]))
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     return {
-        fetchOrders
+        fetchOrders,
+        resetOrders
     }
 }
