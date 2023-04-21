@@ -4,7 +4,7 @@ import { fireEvent, render, screen, renderHook, waitFor } from '@testing-library
 
 // Internal
 import Login from './Login'
-import { GuestLayoutMock, wrapper } from '../../test-env'
+import { GuestLayoutMock, guestWrapper as wrapper } from '../../test-env'
 import { useAuth } from '../../hooks'
 
 // Mount the Login component and test if key elements are rendered

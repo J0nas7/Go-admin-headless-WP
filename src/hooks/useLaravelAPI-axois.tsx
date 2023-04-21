@@ -40,8 +40,9 @@ export const useLaravelAPI = () => {
                                                     },
                                                 })
             return response
-        } catch(e) {
-            console.log("httpPostWithData", e)
+        } catch(e:any) {
+            if (e.response) console.log("httpPostWithData", e)
+            return false
         }
     }
 

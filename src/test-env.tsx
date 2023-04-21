@@ -31,6 +31,10 @@ export const PrivateLayoutMock = ({children}:any) => {
     )
 }
 
-export const wrapper = ({children}:any) => {
+export const guestWrapper = ({children}:any) => {
     return <GuestLayoutMock>{children}</GuestLayoutMock>;
+}
+
+export const privateWrapper = ({children}:any) => {
+    return <PrivateLayoutMock>{children}</PrivateLayoutMock>;
 }

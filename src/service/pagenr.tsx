@@ -48,8 +48,10 @@ export const usePageNr = (pageUrl: string) => {
     }) => {
         return (
             <Block className={classList+" md:float-left"}>
-                {(listSize > 0) && (
+                {(listSize > 0) ? (
                     <Text variant='span'>Side {currentPageNr} viser resultat: {startResult}-{endResult} af {listSize}</Text>
+                ) : (
+                    <Text variant='span' className='hidden'>Ingen resultater</Text>
                 )}
             </Block>
         )

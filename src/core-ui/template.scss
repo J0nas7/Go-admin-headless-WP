@@ -21,8 +21,9 @@ body:has(#main-wrapper) {
         //@apply lg:w-[990px] lg:mx-auto lg:block;
 
         #page-logo {
-            @apply float-left w-10 h-10 p-2 mr-3 rounded-full;
-            @apply border border-black bg-[#ffe282];
+            @apply float-left w-10 h-10 mr-3 rounded-full;
+            //@apply border border-black bg-[#ffe282];
+            @apply bg-white;
             
             img { @apply w-full; }
         }

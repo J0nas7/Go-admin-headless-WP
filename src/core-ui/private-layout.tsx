@@ -66,7 +66,7 @@ export const PrivateLayout = ({
             <div id="top-header">
                 <Link to="/">
                     <span id="page-logo">
-                        <img alt={ wpBlogSettings && wpBlogSettings.blogname } src={require('../Assets/Images/headerLogo.png')} />
+                        <img alt={ wpBlogSettings && wpBlogSettings.blogname } src={require('../Assets/Images/corp-logo-short.png')} />
                     </span>
                     <span id="logo-title">{ wpBlogSettings && wpBlogSettings.blogname }</span>
                     <span id="logo-teaser">{ wpBlogSettings && wpBlogSettings.blogdescription }</span>

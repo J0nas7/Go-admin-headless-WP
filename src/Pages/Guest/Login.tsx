@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 // Internal
-import { Field } from '../../components';
+import { Field, Block, Text, Heading } from '../../components'
 import { useAuth } from '../../hooks'
 import { useTypedSelector, selectIsLoggedIn } from '../../redux'
 
@@ -31,18 +31,18 @@ const Login = () => {
     }
     
     return (
-        <div id="login-page">
-            <span className="the-logo"></span>
-            <h1>Organisation</h1>
-            <span className="teaser-msg">Log på med din organisationskonto</span>
+        <Block theId="login-page">
+            <Block variant="span" className="the-logo"></Block>
+            <Heading title="Organisation" />
+            <Text variant="span" className="teaser-msg">Log på med din organisationskonto</Text>
 
             { error && status === 'resolved' && (
-				<div className="error-notice">
+				<Block className="error-notice">
 					<p>{ error }</p>
-				</div>
+                </Block>
 			) }
 
-            <div className="guest-form">
+            <Block className="guest-form">
                 <form onSubmit={onLogin} autoComplete="on">
                     <Field
                         type="text"
@@ -60,28 +60,28 @@ const Login = () => {
                         disabled={status === 'resolving'}
                         autoComplete="password"
                     />
-                    <p>
+                    <Text variant="p">
                         <button
                             className={'button ' + status}
                             onClick={onLogin}
                             disabled={status === 'resolving'}
                         >
-                            <span className="btnTxt">
+                            <Text variant="span" className="btnTxt">
                                 Log på
-                            </span>
+                            </Text>
                         </button>
-                    </p>
+                    </Text>
                 </form>
-            </div>
+            </Block>
 
-            <span className="guest-link">
+            <Text variant="span" className="guest-link">
                 <Link to="#" className="underline">
                     Glemt adgangskode, eller problemer med at logge på?
                 </Link>
-            </span>
-            <div className="clrBth"></div>
-        </div>
-    );
+            </Text>
+            <Block className="clear-both"/>
+        </Block>
+    )
 }
 
-export default Login;
+export default Login
