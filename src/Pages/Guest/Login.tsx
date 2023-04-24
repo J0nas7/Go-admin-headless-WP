@@ -1,6 +1,7 @@
 // External
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from "@mui/material"
 
 // Internal
 import { Field, Block, Text, Heading } from '../../components'
@@ -10,6 +11,8 @@ import { useTypedSelector, selectIsLoggedIn } from '../../redux'
 const Login = () => {
     const [username,setUsername] = useState<string>('')
 	const [password,setPassword] = useState<string>('')
+    const [showPassword,setShowPassword] = useState<boolean>(false)
+
     const { login, adminLoggedInTest, onLoginSuccess, error, status } = useAuth()
     const isLoggedIn = useTypedSelector(selectIsLoggedIn)
 
@@ -25,8 +28,12 @@ const Login = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const onLogin = (e : any) => {
-        e.preventDefault()
+    const ifEnter = (e: any) => {
+        if (e.key === 'Enter') onLogin()
+    }
+    
+    const onLogin = (e : any = '') => {
+        if (typeof e.preventDefault === 'function') e.preventDefault()
         login(username, password)
     }
     
@@ -37,9 +44,7 @@ const Login = () => {
             <Text variant="span" className="teaser-msg">Log på med din organisationskonto</Text>
 
             { error && status === 'resolved' && (
-				<Block className="error-notice">
-					<p>{ error }</p>
-                </Block>
+				<Block className="error-notice" variant="p">{ error }</Block>
 			) }
 
             <Block className="guest-form">
@@ -49,27 +54,33 @@ const Login = () => {
                         lbl="Konto"
                         value={username}
                         onChange={(e: string) => setUsername(e)}
+                        onKeyDown={(e: any) => {ifEnter(e)}}
                         disabled={status === 'resolving'}
                         autoComplete="username"
+                        className="login-field"
                     />
                     <Field
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         lbl="Kodeord"
                         value={password}
                         onChange={(e: string) => setPassword(e)}
+                        onKeyDown={(e: any) => {ifEnter(e)}}
+                        endButton={() => {setShowPassword(!showPassword)}}
+                        endContent={!showPassword ? 'Vis' : 'Skjul'}
                         disabled={status === 'resolving'}
                         autoComplete="password"
+                        className="login-field"
                     />
                     <Text variant="p">
-                        <button
-                            className={'button ' + status}
+                        <Button
+                            className={'login-btn button ' + status}
                             onClick={onLogin}
                             disabled={status === 'resolving'}
                         >
                             <Text variant="span" className="btnTxt">
                                 Log på
                             </Text>
-                        </button>
+                        </Button>
                     </Text>
                 </form>
             </Block>

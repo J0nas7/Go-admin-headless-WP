@@ -13,11 +13,15 @@ describe("(Page) Login", () => {
     render( <GuestLayoutMock><Login /></GuestLayoutMock> )
     const emailInput = screen.getByLabelText('Konto')
     const passwordInput = screen.getByLabelText('Kodeord')
-    const loginButton = screen.getByRole("button")
+    const loginButton = screen.getByRole('button', { name: /Log på/i })
+    const passwordButton = screen.getByRole('button', { name: /Vis/i })
+    const bottomLink = screen.getByRole('link', { name: /Glemt/i })
 
     expect(emailInput).toBeInstanceOf(HTMLInputElement)
     expect(passwordInput).toBeInstanceOf(HTMLInputElement)
     expect(loginButton).toBeInstanceOf(HTMLButtonElement)
+    expect(passwordButton).toBeInstanceOf(HTMLButtonElement)
+    expect(bottomLink).toBeInstanceOf(HTMLAnchorElement)
     //expect(false).toBe(true)
   })
 })
@@ -29,7 +33,7 @@ describe("(Activity) Login failure", () => {
 
     const emailInput = screen.getByLabelText('Konto')
     const passwordInput = screen.getByLabelText('Kodeord')
-    const loginButton = screen.getByRole("button")
+    const loginButton = screen.getByRole('button', { name: /Log på/i })
 
     fireEvent.change(emailInput, {
       target: { value: "Nameuser" },
@@ -59,7 +63,7 @@ describe("(Activity) Login missing credentials", () => {
     
     const emailInput = screen.getByLabelText('Konto')
     const passwordInput = screen.getByLabelText('Kodeord')
-    const loginButton = screen.getByRole("button")
+    const loginButton = screen.getByRole('button', { name: /Log på/i })
 
     fireEvent.change(emailInput, {
       target: { value: "Nameuser" },

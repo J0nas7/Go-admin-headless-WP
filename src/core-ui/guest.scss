@@ -36,15 +36,24 @@ body:has(#guest-wrapper) {
         }
 
         .guest-form {
-            input, textarea, select {
-                @apply w-full py-[6px] px-[10px] my-[10px] block;
-                @apply border border-[#ddd];
+            .input-field-wrap, .login-field {
+                @apply w-full;
+
+                input, textarea, select {
+                    @apply w-full;
+                    @apply py-[6px] px-[10px] my-[10px] block;
+                    @apply border border-[#ddd];
+                }
             }
     
-            button {
+            button.login-btn {
                 @apply w-full h-[34px] p-[8px] border-0 rounded-[4px];
                 @apply bg-green-400 cursor-pointer;
                 @apply text-white text-[1rem];
+
+                .btnTxt {
+                    @apply normal-case;
+                }
             }
         }
 

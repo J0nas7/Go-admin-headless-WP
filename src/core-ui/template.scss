@@ -90,10 +90,16 @@ body:has(#main-wrapper) {
                 @apply text-3xl font-semibold;
             }
 
-            .search-field {
-                @apply w-full max-w-[330px] p-2 outline-0;
-                @apply bg-[#444] text-white;
-                @apply md:w-[50%] md:float-right;
+            .input-field-wrap {
+                .search-field {
+                    @apply w-full max-w-[330px];
+                    @apply md:w-[50%] md:float-right;
+                    
+                    input {
+                        @apply w-full p-2 outline-0;
+                        @apply bg-[#444] text-white;
+                    }
+                }
             }
 
             .card-wrapper {
