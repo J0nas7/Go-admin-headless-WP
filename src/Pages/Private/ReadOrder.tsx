@@ -38,7 +38,7 @@ const ReadOrder = () => {
         <Block className="w-full">
             <Heading title={docTitle} className='min-w-full' />
             {theOrder && (
-                <OrderCard order={theOrder} format='single' />
+                <OrderCard order={theOrder} format='single-page' />
             )}
         </Block>
     )

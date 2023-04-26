@@ -150,3 +150,92 @@ body:has(#main-wrapper) {
     -webkit-animation: placeholdLoading 1s ease-in-out infinite alternate;
     animation: placeholdLoading 1s ease-in-out infinite alternate;
 }
+
+
+
+
+.order-status-overview {
+    width: 100%;
+    height: 230px;
+    float: left;
+    background: rgba(179, 198, 226, 0.6);
+
+    .overview-current {
+        width: 400px;
+        height: 80px;
+        margin: 0 auto;
+        margin-top: 50px;
+        margin-bottom: 20px;
+        padding: 12px;
+        background: white;
+        
+        .status-icon {
+            background: #b3c6e2;
+            display: block;
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin-right: 12px;
+            border-radius: 100%;
+        }
+
+        .status-headline {
+            color: #002154;
+            font-family: Calibri, sans-serif;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+    }
+
+    .overview-timeline {
+        width: 100%;
+        height: auto;
+
+        .timeline-item {
+            width: 20%;
+            float: left;
+            position: relative;
+            text-align: center;
+
+            .timeline-line {
+                width: 100%;
+                height: 5px;
+                top: 10px;
+                position: absolute;
+
+                &.active {
+                    background: white;
+                }
+
+                &.inactive {
+                    background: rgb(179, 198, 226);
+                }
+            }
+
+            .timeline-item-icon {
+                background: #002154;
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                margin-bottom: 5px;
+                color: white;
+                font-weight: bold;
+                display: inline-block;
+                border-radius: 100%;
+                position: relative;
+                z-index: 1;
+            }
+
+            .timeline-item-title {
+                display: block;
+                color: white;
+                font-weight: bold;
+            }
+
+            .timeline-item-datetime {
+                color: white;
+            }
+        }
+    }
+}

@@ -96,6 +96,7 @@ export const PrivateLayout = ({
                 </div>
                 <div className="clear-both"></div>
             </div>
+            <div className="clear-both"></div>
         </div>
     )
 }
