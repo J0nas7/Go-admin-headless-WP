@@ -49,8 +49,10 @@ export const useSearchForm = (pageUrl: string) => {
     const SearchEnter = ({classList}:{classList:string}) => {
         return (
             <Block className={`${classList} md:text-right md:float-right ${(searchterm && !dosearch ? '' : 'hidden')}`}>
-                {searchterm && !dosearch && (
+                {(searchterm && !dosearch) ? (
                     <Text variant="span">Tryk på enter for at søge</Text>
+                ) : (
+                    <Text variant="span" className="hidden">Udfyld søgeord</Text>
                 )}
             </Block>
         )

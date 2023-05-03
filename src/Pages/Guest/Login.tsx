@@ -1,15 +1,18 @@
 // External
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from "@mui/material"
 
 // Internal
-import { Field } from '../../components';
+import { Field, Block, Text, Heading } from '../../components'
 import { useAuth } from '../../hooks'
 import { useTypedSelector, selectIsLoggedIn } from '../../redux'
 
 const Login = () => {
     const [username,setUsername] = useState<string>('')
 	const [password,setPassword] = useState<string>('')
+    const [showPassword,setShowPassword] = useState<boolean>(false)
+
     const { login, adminLoggedInTest, onLoginSuccess, error, status } = useAuth()
     const isLoggedIn = useTypedSelector(selectIsLoggedIn)
 
@@ -25,63 +28,71 @@ const Login = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const onLogin = (e : any) => {
-        e.preventDefault()
+    const ifEnter = (e: any) => {
+        if (e.key === 'Enter') onLogin()
+    }
+    
+    const onLogin = (e : any = '') => {
+        if (typeof e.preventDefault === 'function') e.preventDefault()
         login(username, password)
     }
     
     return (
-        <div id="login-page">
-            <span className="the-logo"></span>
-            <h1>Organisation</h1>
-            <span className="teaser-msg">Log på med din organisationskonto</span>
+        <Block theId="login-page">
+            <Block variant="span" className="the-logo"></Block>
+            <Heading title="Organisation" />
+            <Text variant="span" className="teaser-msg">Log på med din organisationskonto</Text>
 
             { error && status === 'resolved' && (
-				<div className="error-notice">
-					<p>{ error }</p>
-				</div>
+				<Block className="error-notice" variant="p">{ error }</Block>
 			) }
 
-            <div className="guest-form">
+            <Block className="guest-form">
                 <form onSubmit={onLogin} autoComplete="on">
                     <Field
                         type="text"
                         lbl="Konto"
                         value={username}
                         onChange={(e: string) => setUsername(e)}
+                        onKeyDown={(e: any) => {ifEnter(e)}}
                         disabled={status === 'resolving'}
                         autoComplete="username"
+                        className="login-field"
                     />
                     <Field
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         lbl="Kodeord"
                         value={password}
                         onChange={(e: string) => setPassword(e)}
+                        onKeyDown={(e: any) => {ifEnter(e)}}
+                        endButton={() => {setShowPassword(!showPassword)}}
+                        endContent={!showPassword ? 'Vis' : 'Skjul'}
                         disabled={status === 'resolving'}
                         autoComplete="password"
+                        className="login-field"
                     />
-                    <p>
-                        <button
-                            className={'button ' + status}
+                    <Text variant="p">
+                        <Button
+                            className={'login-btn button ' + status}
                             onClick={onLogin}
                             disabled={status === 'resolving'}
                         >
-                            <span className="btnTxt">
+                            <Text variant="span" className="btnTxt">
                                 Log på
-                            </span>
-                        </button>
-                    </p>
+                            </Text>
+                        </Button>
+                    </Text>
                 </form>
-            </div>
+            </Block>
 
-            <span className="guest-link">
+            <Text variant="span" className="guest-link">
                 <Link to="#" className="underline">
                     Glemt adgangskode, eller problemer med at logge på?
                 </Link>
-            </span>
-            <div className="clrBth"></div>
-        </div>
-    );
+            </Text>
+            <Block className="clear-both"/>
+        </Block>
+    )
 }
 
-export default Login;
+export default Login

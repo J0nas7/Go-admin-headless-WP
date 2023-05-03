@@ -29,10 +29,10 @@ const CurrentOrders = () => {
 
   useEffect(() => {
     if (ordersSummaryListLength) {
-      console.log("GOT DATA", ordersSummaryList)
       setOrdersToRender(ordersSummaryList)
       setListSize(ordersSummaryListLength)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ordersSummaryList])
 
   useEffect(() => {
@@ -41,7 +41,6 @@ const CurrentOrders = () => {
   }, [])
 
   useEffect(() => {
-    console.log("TERMS CHANGED", currentPageNr, dosearch)
     readCurrentOrders()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPageNr, dosearch])
@@ -69,16 +68,16 @@ const CurrentOrders = () => {
             <Block className="clear-both"/>
           </Block>
           {!ordersToRender.length && ( <div className={ordersClassList+" placeholdLoading"}>Henter...</div> )}
-          {ordersToRender.length && (
+          { ordersToRender.length > 0 && (
             <Block>
                 <Block className="current-orders-list">
                     {
                         //displayOrders.length && displayOrders.map((item: any, key: string) => {
-                        ordersToRender.length && ordersToRender.map(order => (
-                            //return (
-                                <OrderCard order={order} format='summary' classList={ordersClassList} key={order.orderId}/>
-                            //)
-                          ))
+                        ordersToRender.map(order => (
+                          //return (
+                              <OrderCard order={order} format='summary' classList={ordersClassList} key={order.orderId}/>
+                          //)
+                        ))
                     }
                     <Block className="clear-both"/>
                 </Block>

@@ -1,4 +1,5 @@
 // External
+import { configureStore, PreloadedState } from "@reduxjs/toolkit"
 import { BrowserRouter } from "react-router-dom"
 
 // Internal
@@ -28,4 +29,12 @@ export const PrivateLayoutMock = ({children}:any) => {
             </BrowserRouter>
         </ReduxProviderWrapper>
     )
+}
+
+export const guestWrapper = ({children}:any) => {
+    return <GuestLayoutMock>{children}</GuestLayoutMock>;
+}
+
+export const privateWrapper = ({children}:any) => {
+    return <PrivateLayoutMock>{children}</PrivateLayoutMock>;
 }

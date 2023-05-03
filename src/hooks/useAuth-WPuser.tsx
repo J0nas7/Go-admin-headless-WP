@@ -41,14 +41,7 @@ export const useAuth = () => {
         localStorage.setItem("adminLoggedIn", "Is logged in")
         setIsLoggedIn(true)
         navigate("/")
-        /*loginData = {
-            "userID": loginData.userID,
-            "keyWithSalt": loginData.keyWithSalt,
-        }
-        localStorage.setItem("logonCreds", JSON.stringify(loginData))*/
-        //setIsLoggedIn(loginData)
-        //setLoginState(loginData)
-    } //);
+    }
 
     const onError = /*useSafeDispatch(*/ (errors? : any) => {
         if (loginErrorType) {
@@ -71,13 +64,17 @@ export const useAuth = () => {
     }, [loginErrorType])
 
     const processLoginResult = (loginResult : any) => {
-        console.log("THE RESULT", loginResult)
+        console.log("THE LOGIN RESULT", loginResult)
         setStatus('resolved')
         if (loginResult.success === false) {
             onError(loginResult)
+            console.log("answer", false)
         } else if (loginResult.success === true) {
             onLoginSuccess()
+            console.log("answer", true)
+            return true
         }
+        return false
     }
 
     const adminLoggedInTest = () => {
@@ -89,28 +86,40 @@ export const useAuth = () => {
         })*/
     }
 
-    const login = async (usernameInput : string, passwordInput : string) => {
+    const login = async (usernameInput : string, passwordInput : string) : Promise<boolean> => {
         setStatus('resolving')
-		dispatch(setLoginErrorType({
-            "data": ""
-        }))
-
         const loginVariables = {
             "username": usernameInput, 
             "password": passwordInput,
             //"token_name": usernameInput, 
         }
         
+        // If name/email or password is empty
+        if (!usernameInput || !passwordInput) {
+            const data = {
+                "success": false,
+                "message": "Empty request",
+                "data": false
+            }
+            processLoginResult(data)
+            return false
+        }
+        
+        // Resetting the errorType triggers another dispatch that resets the error
+        dispatch(setLoginErrorType({ "data": "" }))
+        
         console.log("loginVariables", loginVariables)
+        // Request a new server-side Laravel Sanctum CSRF cookie
         requestCSRF().then(async csrfResp => {
+            // Send login variables to the API for authentication
             try {
                 const data = await httpPostWithData("adminLogin", loginVariables)
-                console.log("LOGIN RESULT:", data)
-                processLoginResult(data)
+                return processLoginResult(data)
             } catch (e) {
-                console.log("useAuth login", e)
+                console.log("useAuth login error", e)
             }
         })
+        return false
 	}
 
     const logout = () => {

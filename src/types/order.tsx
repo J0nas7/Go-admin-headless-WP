@@ -10,8 +10,11 @@ export type OrderDTO = {
     dateCreated?: string
     numItemsSold?: number
     status?: string
+    orderStep?: number
     customerId?: number
     datePaid?: string
     dateCompleted?: string
     theHelperIs?: string
+    subtotalSale?: number
+    shippingTotal?: number
   }

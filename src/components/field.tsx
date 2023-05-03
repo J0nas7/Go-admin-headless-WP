@@ -13,14 +13,19 @@
  * @param {Object} props.props Remaining props.
  */
 
+import { IconButton, InputAdornment, TextField } from "@mui/material"
+import { Block, Text } from "./text_block"
+
 export const Field = ({
-    type, lbl, displayLabel, placeholder, description, value, grow, disabled, className, onChange, /*onKeyDown,*/ error, ...props
+    type, lbl, displayLabel, placeholder, description, value, grow, disabled, className, onChange, onKeyDown, endButton, endContent, error, ...props
 } : {
     type: string,
     lbl: string, 
     value: string, 
     onChange: Function, 
-    //onKeyDown?: Function, 
+    onKeyDown?: Function, 
+    endButton?: Function, 
+    endContent?: string, 
     disabled: boolean, 
     error?: string,
     displayLabel?: boolean, 
@@ -42,40 +47,58 @@ export const Field = ({
 	}
 
 	return (
-		<div className={'field' + (error ? ' field--error' : '') }>
+		<Block className={'field' + (error ? ' field--error' : '') }>
             { (lbl || displayLabel === true) && (
                 <label htmlFor={ `field-${ lbl }` }>
                     { lbl }
                 </label>
             ) }
-			<div className="field-input">
+			<Block className="field-input">
 				{ grow === true ? (
-                    <span>hej</span>
+                    <Text variant="span">hej</Text>
 					/*<TextareaAutosize
 						{ ...inputProps }
 						minRows={ 1 }
 						onChange={ ( event ) => onChange( event.target.value ) }
 					/>*/
 				) : (
-                    <span>
-                        <input  
-                            { ...inputProps }
-                            onChange={(event) => onChange(event.target.value)}
-                            //onKeyDown={(event) => onChange(event)}
+                    <Text variant="span" className="input-field-wrap">
+                        <TextField 
+                            { ...inputProps } 
+                            onChange={(event:any) => onChange(event.target.value)} 
+                            
+                            onKeyDown={onKeyDown ?
+                                (event) => onKeyDown!(event) : 
+                                undefined}
+
+                            InputProps={endButton ? 
+                                {
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                        <IconButton
+                                            edge="end"
+                                            onClick={() => endButton()}
+                                        >
+                                        {endContent}
+                                        </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }
+                                : undefined}
                         />
-                    </span>
+                    </Text>
 				) }
-			</div>
+			</Block>
 			{ description && (
-				<p className="field__description">
+				<Text variant="p" className="field__description">
 					{ description }
-				</p>
+                </Text>
 			) }
 			{ error && (
-				<p className="field__error">
+				<Text variant="p" className="field__error">
 					{ error }
-				</p>
+                </Text>
 			) }
-		</div>
+		</Block>
 	)
 }

@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
     auth: authReducer
 })
 
-const appReducer = (state:any, action:any) => {
+export const appReducer = (state:any, action:any) => {
     if (action.type === 'RESET_APP') {
       console.log("R E S E T")
       state = undefined

@@ -1,5 +1,4 @@
 // External
-import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 
 export const useInternNavigate = (pageUrl: string) => {
@@ -7,13 +6,8 @@ export const useInternNavigate = (pageUrl: string) => {
     let params = useParams<{ pageNr: string, getSearch: string }>()
     let navigateUrl : string = ''
 
-    useEffect(() => {
-        
-    }, [])
-
     const appNavigate = (navData: any) => {
         if (pageUrl === "/cur-orders/") {
-            console.log("navData", navData)
             if (navData.role === "pageNr") {
                 navigateUrl = "side/"+navData.value
             } else {

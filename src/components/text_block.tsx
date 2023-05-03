@@ -24,19 +24,21 @@ const classes: Record<Variant, string> = {
 type Props = {
     variant?: Variant
     className?: string
+    theId?: string
     style?: CSSProperties
     children?: any
 }
 
 const theElement = ({
-    variant = 'div', className, style, children
+    variant = 'div', className, theId, style, children
 } : Props) => {
     const Element = elements[variant]
     className = className ? className+' ' : ''
 
     return (
         <Element 
-            className={`${className+classes[variant]}`}
+            className={`${className+classes[variant]}`} 
+            id={theId} 
             style={style}
         >
             {children}

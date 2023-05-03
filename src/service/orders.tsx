@@ -10,6 +10,7 @@ import {
     selectOrdersSummaryLength,
     setSingleOrder,
     setOrdersSummary, 
+    resetOrdersSummary,
     useTypedSelector
 } from '../redux'
 
@@ -17,7 +18,7 @@ export const useOrders = () => {
     const navigate = useNavigate()
 
     const dispatch = useAppDispatch()
-    const { fetchOrders } = useOrdersActions()
+    const { fetchOrders, resetOrders } = useOrdersActions()
     const singleOrder = useTypedSelector(selectSingleOrder)
     const ordersSummaryList = useTypedSelector(selectOrdersSummary)
     const ordersSummaryListLength = useTypedSelector(selectOrdersSummaryLength)
@@ -29,6 +30,7 @@ export const useOrders = () => {
             "searchTerm" : searchterm
         }
         //return postWithData("readAllOrdersSummary", postData)
+        dispatch(resetOrders(resetOrdersSummary))
         dispatch(fetchOrders("readAllOrdersSummary", postData, setOrdersSummary))
     }
 
